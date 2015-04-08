@@ -1,3 +1,4 @@
+/*
 package com.handmark.pulltorefresh.library.internal;
 
 import android.content.Context;
@@ -10,9 +11,11 @@ import android.graphics.SweepGradient;
 import android.util.AttributeSet;
 import us.pinguo.uilext.view.CircleImageView;
 
+*/
 /**
  * Created by huangwei on 15-3-4.
- */
+ *//*
+
 public class ProgressCircleImageView extends CircleImageView implements Runnable {
 
     public static final int STATE_DEFAULT = 0;
@@ -156,3 +159,4 @@ public class ProgressCircleImageView extends CircleImageView implements Runnable
         super.onDetachedFromWindow();
     }
 }
+*/

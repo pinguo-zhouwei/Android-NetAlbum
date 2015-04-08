@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *******************************************************************************/
+ *******************************************************************************//*
+
 package com.handmark.pulltorefresh.library;
 
 import android.animation.Animator;
@@ -34,7 +35,6 @@ import android.widget.ListView;
 import com.handmark.pulltorefresh.library.internal.EmptyViewMethodAccessor;
 import com.handmark.pulltorefresh.library.internal.LoadingLayout;
 import com.handmark.pulltorefresh.library.internal.StickyHeaderLayout;
-import us.pinguo.uilext.util.DisplayUtil;
 
 public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView> {
 
@@ -68,10 +68,12 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 
     @Override
     protected void onRefreshing(final boolean doScroll) {
-        /**
+        */
+/**
          * If we're not showing the Refreshing view, or the list is empty, the
          * the header/footer views won't show so we use the normal method.
-         */
+         *//*
+
         ListAdapter adapter = mRefreshableView.getAdapter();
         if (!mListViewExtrasEnabled || !getShowViewWhileRefreshing() || null == adapter || adapter.isEmpty()) {
             super.onRefreshing(doScroll);
@@ -132,9 +134,11 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 
     @Override
     protected void onReset() {
-        /**
+        */
+/**
          * If the extras are not enabled, just call up to super and return.
-         */
+         *//*
+
         if (!mListViewExtrasEnabled) {
             super.onReset();
             return;
@@ -173,11 +177,13 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
             // Hide the ListView Header/Footer
             listViewLoadingLayout.setVisibility(View.GONE);
 
-            /**
+            */
+/**
              * Scroll so the View is at the same Y as the ListView
              * header/footer, but only scroll if: we've pulled to refresh, it's
              * positioned correctly
-             */
+             *//*
+
             if (scrollLvToEdge && getState() != State.MANUAL_REFRESHING) {
                 mRefreshableView.setSelection(selection);
                 setHeaderScroll(scrollToHeight);
@@ -249,10 +255,12 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
             mFooterLoadingView.setVisibility(View.GONE);
             mLvFooterLoadingFrame.addView(mFooterLoadingView, lp);
 
-            /**
+            */
+/**
              * If the value for Scrolling While Refreshing hasn't been
              * explicitly set via XML, enable Scrolling While Refreshing.
-             */
+             *//*
+
             if (!a.hasValue(R.styleable.PullToRefresh_ptrScrollingWhileRefreshingEnabled)) {
                 setScrollingWhileRefreshingEnabled(true);
             }
@@ -290,11 +298,13 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 
         @Override
         protected void dispatchDraw(Canvas canvas) {
-            /**
+            */
+/**
              * This is a bit hacky, but Samsung's ListView has got a bug in it
              * when using Header/Footer Views and the list is empty. This masks
              * the issue so that it doesn't cause an FC. See Issue #66.
-             */
+             *//*
+
             try {
                 super.dispatchDraw(canvas);
             } catch (IndexOutOfBoundsException e) {
@@ -304,11 +314,13 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 
         @Override
         public boolean dispatchTouchEvent(MotionEvent ev) {
-            /**
+            */
+/**
              * This is a bit hacky, but Samsung's ListView has got a bug in it
              * when using Header/Footer Views and the list is empty. This masks
              * the issue so that it doesn't cause an FC. See Issue #66.
-             */
+             *//*
+
             try {
                 return super.dispatchTouchEvent(ev);
             } catch (IndexOutOfBoundsException e) {
@@ -361,9 +373,11 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
         private int mHeaderHeight;
 
         private float mPreY;
-        /**
+        */
+/**
          * 拉伸超过此高度，即视为可以开始刷新
-         */
+         *//*
+
         private float mRefreshH;
 
         private OnStickyRefreshListener mOnStickyRefreshListener;
@@ -372,7 +386,7 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 
         private ValueAnimator mReboundAnimator;
 
-        private final int DP5 = DisplayUtil.dpToPx(getContext(), 5);
+        private final int DP5 =5; //DisplayUtil.dpToPx(getContext(), 5);
 
         public StickyItemListView(Context context, AttributeSet attrs) {
             super(context, attrs);
@@ -628,13 +642,15 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 
             } else {
 
-                /**
+                */
+/**
                  * This check should really just be:
                  * mRefreshableView.getFirstVisiblePosition() == 0, but PtRListView
                  * internally use a HeaderView which messes the positions up. For
                  * now we'll just add one to account for it and rely on the inner
                  * condition which checks getTop().
-                 */
+                 *//*
+
                 if (mRefreshableView.getFirstVisiblePosition() <= 1) {
                     final View firstVisibleChild = mRefreshableView.getChildAt(0);
                     if (firstVisibleChild != null) {
@@ -672,11 +688,13 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 //
 //    @Override
 //    protected void dispatchDraw(Canvas canvas) {
-//        /**
+//        */
+/**
 //         * This is a bit hacky, but Samsung's ListView has got a bug in it
 //         * when using Header/Footer Views and the list is empty. This masks
 //         * the issue so that it doesn't cause an FC. See Issue #66.
-//         */
+//         *//*
+
 //        try {
 //            super.dispatchDraw(canvas);
 //        } catch (IndexOutOfBoundsException e) {
@@ -686,11 +704,13 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 //
 //    @Override
 //    public boolean dispatchTouchEvent(MotionEvent ev) {
-//        /**
+//        */
+/**
 //         * This is a bit hacky, but Samsung's ListView has got a bug in it
 //         * when using Header/Footer Views and the list is empty. This masks
 //         * the issue so that it doesn't cause an FC. See Issue #66.
-//         */
+//         *//*
+
 //        try {
 //            return super.dispatchTouchEvent(ev);
 //        } catch (IndexOutOfBoundsException e) {
@@ -720,4 +740,4 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 //        super.setEmptyView(emptyView);
 //    }
 //
-//}
+//}*/

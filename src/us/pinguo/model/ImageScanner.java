@@ -8,11 +8,12 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import us.pinguo.utils.DateUtils;
+import us.pinguo.utils.PhotoCompator;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
+ * 图片扫描器
  * Created by Mr 周先森 on 2015/4/6.
  */
 public class ImageScanner implements Runnable{
@@ -37,9 +38,13 @@ public class ImageScanner implements Runnable{
         Cursor cursor = mContentResolver.query(mImageUri, null, null, null, MediaStore.Images.Media.DATE_ADDED);
         parsePhotoInfo(cursor);
 
+        List<PhotoItem> photoItemList = addHeaderId(mPhotoItems);
+
+        //排序
+        Collections.sort(photoItemList,new PhotoCompator());
         //回调
         if(mScanImageListener!=null){
-            mScanImageListener.onScanImageComplete(mPhotoItems);
+            mScanImageListener.onScanImageComplete(photoItemList);
         }
     }
 
@@ -60,9 +65,34 @@ public class ImageScanner implements Runnable{
 
             String photoTime = DateUtils.getFormatDate(times);
             PhotoItem item = new PhotoItem(path,photoTime);
+            //为每一个Item 加上headerId
+
+
             mPhotoItems.add(item);
         }
         cursor.close();
+    }
+
+    /**
+     * 为每个张照片生成一个headerId
+     * @param items
+     * @return
+     */
+    private List<PhotoItem> addHeaderId(List<PhotoItem> items){
+        Map<String,Integer> headerIdMaps = new HashMap<String, Integer>();
+        List<PhotoItem> photoItemList = new ArrayList<PhotoItem>();
+        int headerId = 1;
+        for(PhotoItem item:items){
+            if(!headerIdMaps.containsKey(item.time)){
+                headerIdMaps.put(item.time,headerId);
+                item.headerId =  headerId;
+                headerId++;
+            }else{
+                item.headerId = headerIdMaps.get(item.time);
+            }
+            photoItemList.add(item);
+        }
+     return photoItemList;
     }
     public void setmScanImageListener(ScanImageListener mScanImageListener) {
         this.mScanImageListener = mScanImageListener;

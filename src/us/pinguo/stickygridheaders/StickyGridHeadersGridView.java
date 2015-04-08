@@ -16,7 +16,6 @@
 
 package us.pinguo.stickygridheaders;
 
-import com.tonicartos.widget.stickygridheaders.StickyGridHeadersBaseAdapterWrapper.HeaderFillerView;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -864,7 +863,7 @@ public class StickyGridHeadersGridView extends GridView implements OnScrollListe
                 return;
             }
 
-            boolean headerIsStickied = ((HeaderFillerView)frame).getHeaderId() == mCurrentHeaderId
+            boolean headerIsStickied = ((StickyGridHeadersBaseAdapterWrapper.HeaderFillerView)frame).getHeaderId() == mCurrentHeaderId
                     && frame.getTop() < 0 && mAreHeadersSticky;
             if (header.getVisibility() != View.VISIBLE || headerIsStickied) {
                 continue;

@@ -3,15 +3,15 @@ package com.handmark.pulltorefresh.library.internal;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 /**
  * Created by huangwei on 15-3-4.
  */
 public class StickyHeaderLayout extends RelativeLayout {
 
-    private ProgressCircleImageView mCircleImg;
+    private ImageView mCircleImg;
 
     public StickyHeaderLayout(Context context) {
         super(context);
@@ -24,7 +24,7 @@ public class StickyHeaderLayout extends RelativeLayout {
     public StickyHeaderLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
-
+/*
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
@@ -63,5 +63,5 @@ public class StickyHeaderLayout extends RelativeLayout {
 
     public void triggerRefresh() {
         mCircleImg.start();
-    }
+    }*/
 }
