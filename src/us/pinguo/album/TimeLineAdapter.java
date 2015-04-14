@@ -1,6 +1,7 @@
 package us.pinguo.album;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,10 @@ import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import us.pinguo.model.PhotoItem;
 import us.pinguo.stickygridheaders.StickyGridHeadersBaseAdapter;
+import us.pinguo.stickygridheaders.StickyGridHeadersGridView;
 import us.pinguo.stickygridheaders.StickyGridHeadersSimpleAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,8 +28,8 @@ import java.util.List;
 public class TimeLineAdapter extends BaseAdapter implements StickyGridHeadersSimpleAdapter{
     private List<PhotoItem> mPhotoItemList;
     private DisplayImageOptions options = null;
-    public TimeLineAdapter (List<PhotoItem> mPhotoItemList) {
-        this.mPhotoItemList = mPhotoItemList;
+    public TimeLineAdapter () {
+       mPhotoItemList = new ArrayList<PhotoItem>();
     }
 
     @Override
@@ -46,6 +49,7 @@ public class TimeLineAdapter extends BaseAdapter implements StickyGridHeadersSim
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        Log.i("zhouwei","List size...."+mPhotoItemList.size());
         final ViewHolder viewHolder;
         if(convertView==null){
              viewHolder = new ViewHolder();
@@ -55,30 +59,31 @@ public class TimeLineAdapter extends BaseAdapter implements StickyGridHeadersSim
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
 
-            String url = mPhotoItemList.get(position).photoUri;
+            String url = "file://"+mPhotoItemList.get(position).photoUri;
             viewHolder.photo.setTag(url);
-            ImageLoader.getInstance().loadImage(url,options,new ImageLoadingListener() {
+            ImageLoader.getInstance().loadImage(url,new ImageSize(120,120),options,new ImageLoadingListener() {
                 @Override
                 public void onLoadingStarted(String imageUri, View view) {
-
+                    Log.i("zhouwei","ImageLoader start....");
                 }
 
                 @Override
                 public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-
+                    Log.i("zhouwei","ImageLoader fialed....");
                 }
 
                 @Override
                 public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                        if(loadedImage!=null){
-                            viewHolder.photo.setImageBitmap(loadedImage);
-                        }
+                    Log.i("zhouwei","ImageLoader complete....");
+                    if(loadedImage!=null) {
+                        viewHolder.photo.setImageBitmap(loadedImage);
 
+                    }
                 }
 
                 @Override
                 public void onLoadingCancelled(String imageUri, View view) {
-
+                    Log.i("zhouwei","ImageLoader cancel....");
                 }
             });
         }
@@ -114,5 +119,9 @@ public class TimeLineAdapter extends BaseAdapter implements StickyGridHeadersSim
     class ViewHolder{
         ImageView photo;
         TextView headerView;
+    }
+
+    public void setPhotoItemList(List<PhotoItem> mPhotoItemList) {
+        this.mPhotoItemList = mPhotoItemList;
     }
 }

@@ -2,10 +2,13 @@ package us.pinguo.album;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import android.widget.TextView;
 import org.w3c.dom.Text;
+import us.pinguo.db.DBPhotoTable;
+import us.pinguo.db.SandBoxSql;
 import us.pinguo.model.ImageScanner;
 import us.pinguo.model.PhotoItem;
 import us.pinguo.stickygridheaders.StickyGridHeadersGridView;
@@ -25,8 +28,7 @@ public class TimeLineActivity extends Activity implements View.OnClickListener,I
         super.onCreate(savedInstanceState);
         setContentView(R.layout.time_line_layout);
         initView();
-        ImageScanner imageScanner = new ImageScanner(this);
-        new Thread(imageScanner).start();
+
     }
 
     public void initView(){
@@ -41,6 +43,31 @@ public class TimeLineActivity extends Activity implements View.OnClickListener,I
         });*/
         mGridView = (StickyGridHeadersGridView) findViewById(R.id.timeline_gridView);
         mTextView = (TextView) findViewById(R.id.welcom_text);
+        mTimeLineAdapter = new TimeLineAdapter();
+        mGridView.setAdapter(mTimeLineAdapter);
+        mTimeLineAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        List<PhotoItem> photoItemList = null;
+        try {
+            DBPhotoTable dbPhotoTable = new DBPhotoTable(SandBoxSql.getInstance());
+            photoItemList = dbPhotoTable.queryPhoto();
+            Log.i("TimeLineActivity","TimeLineActivity size:"+photoItemList.size());
+            if(photoItemList==null||photoItemList.size() == 0){
+                ImageScanner imageScanner = new ImageScanner(this);
+                imageScanner.setmScanImageListener(this);
+                new Thread(imageScanner).start();
+            }else{
+              mTextView.setVisibility(View.GONE);
+              mTimeLineAdapter.setPhotoItemList(photoItemList);
+              mTimeLineAdapter.notifyDataSetChanged();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -49,10 +76,16 @@ public class TimeLineActivity extends Activity implements View.OnClickListener,I
     }
 
     @Override
-    public void onScanImageComplete(List<PhotoItem> photoItemList) {
-        mTextView.setVisibility(View.GONE);
-        mTimeLineAdapter = new TimeLineAdapter(photoItemList);
-        mGridView.setAdapter(mTimeLineAdapter);
-        mTimeLineAdapter.notifyDataSetChanged();
+    public void onScanImageComplete(final List<PhotoItem> photoItemList) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mTextView.setVisibility(View.GONE);
+                mTimeLineAdapter.setPhotoItemList(photoItemList);
+                mTimeLineAdapter.notifyDataSetChanged();
+            }
+        });
+
     }
+
 }

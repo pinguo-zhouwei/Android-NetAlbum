@@ -13,7 +13,7 @@ public class DateUtils {
     public static String getFormatDate(long timestamp) {
         Log.i("DateUtils", "timestamp：" + timestamp);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.US);
-        String date = simpleDateFormat.format(new Date(timestamp));
+        String date = simpleDateFormat.format(new Date(timestamp*1000L));
         return date;
     }
 }

@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Android-NetAlbum.iml" filepath="$PROJECT_DIR$/Android-NetAlbum.iml" />
-      <module fileurl="file://$PROJECT_DIR$/other/PullToRefresh/PullToRefresh.iml" filepath="$PROJECT_DIR$/other/PullToRefresh/PullToRefresh.iml" />
     </modules>
   </component>
 </project>

@@ -7,6 +7,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
+import us.pinguo.db.DBPhotoTable;
+import us.pinguo.db.SandBoxSql;
 import us.pinguo.utils.DateUtils;
 import us.pinguo.utils.PhotoCompator;
 
@@ -36,10 +39,18 @@ public class ImageScanner implements Runnable{
         ContentResolver mContentResolver = mContext.getContentResolver();
 
         Cursor cursor = mContentResolver.query(mImageUri, null, null, null, MediaStore.Images.Media.DATE_ADDED);
+        Log.i("zhouwei","cursor size:"+cursor.getCount());
         parsePhotoInfo(cursor);
 
         List<PhotoItem> photoItemList = addHeaderId(mPhotoItems);
 
+        try {
+            DBPhotoTable dbPhotoTable = new DBPhotoTable(SandBoxSql.getInstance());
+            dbPhotoTable.insert(photoItemList);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         //排序
         Collections.sort(photoItemList,new PhotoCompator());
         //回调

@@ -11,7 +11,9 @@ public class PhotoItem {
      * headerId 用来分组照片
      */
     public int headerId;
+    public PhotoItem(){
 
+    }
     public PhotoItem(String photoUri, String time) {
         this.photoUri = photoUri;
         this.time = time;
