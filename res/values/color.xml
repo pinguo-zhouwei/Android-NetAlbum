@@ -3,4 +3,5 @@
     <color name="color_accept_invitation">#6FC4FD</color>
     <color name="color_main_bg">#75d2fb</color>
     <color name="title_bar_bg">#75d2fb</color>
+    <color name="color_share_press">#eaeaea</color>
 </resources>

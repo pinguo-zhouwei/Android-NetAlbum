@@ -1,8 +1,17 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+
+    <style name="ThemeDialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.5</item>
     </style>
 
+    <style name="popup_dialog" parent="android:Animation">
+        <item name="@android:windowEnterAnimation">@anim/bs_anim_bottom_popup_port</item>
+        <item name="@android:windowExitAnimation">@anim/bs_anim_bottom_popin_port</item>
+    </style>
 </resources>

@@ -8,6 +8,8 @@
            android:id="@+id/header_text"
            android:layout_width="match_parent"
            android:gravity="center_vertical"
-           android:background="@color/color_main_bg"
+           android:background="@android:color/white"
+           android:textColor="@color/color_main_bg"
+           android:textSize="18sp"
            android:layout_height="50dp"/>
 </LinearLayout>

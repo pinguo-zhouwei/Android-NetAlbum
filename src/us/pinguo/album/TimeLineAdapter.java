@@ -1,6 +1,9 @@
 package us.pinguo.album;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +14,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
@@ -27,11 +31,24 @@ import java.util.List;
  */
 public class TimeLineAdapter extends BaseAdapter implements StickyGridHeadersSimpleAdapter{
     private List<PhotoItem> mPhotoItemList;
-    private DisplayImageOptions options = null;
-    public TimeLineAdapter () {
+    private static DisplayImageOptions options = null;
+
+    private Activity mActivity;
+    public TimeLineAdapter (Activity activity) {
+        mActivity = activity;
        mPhotoItemList = new ArrayList<PhotoItem>();
     }
-
+    static {
+        options =new DisplayImageOptions.Builder()
+                .cacheInMemory(true)                        // 设置下载的图片是否缓存在内存中
+                .cacheOnDisk(true)
+                .imageScaleType(ImageScaleType.EXACTLY)
+                .considerExifParams(true)
+                .resetViewBeforeLoading(true)
+                .showImageForEmptyUri(R.drawable.img_defaut)
+                .showImageOnLoading(R.drawable.img_defaut)
+                .build();
+    }
     @Override
     public int getCount() {
         return mPhotoItemList.size();
@@ -48,20 +65,20 @@ public class TimeLineAdapter extends BaseAdapter implements StickyGridHeadersSim
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         Log.i("zhouwei","List size...."+mPhotoItemList.size());
-        final ViewHolder viewHolder;
+        ViewHolder viewHolder;
         if(convertView==null){
              viewHolder = new ViewHolder();
              convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.time_line_photo_layout,null);
              viewHolder.photo = (ImageView) convertView.findViewById(R.id.photo_item_img);
              convertView.setTag(viewHolder);
-        }else{
+        }
             viewHolder = (ViewHolder) convertView.getTag();
 
             String url = "file://"+mPhotoItemList.get(position).photoUri;
             viewHolder.photo.setTag(url);
-            ImageLoader.getInstance().loadImage(url,new ImageSize(120,120),options,new ImageLoadingListener() {
+            ImageLoader.getInstance().displayImage(url,new ImageViewAware(viewHolder.photo),options,new ImageLoadingListener() {
                 @Override
                 public void onLoadingStarted(String imageUri, View view) {
                     Log.i("zhouwei","ImageLoader start....");
@@ -75,10 +92,10 @@ public class TimeLineAdapter extends BaseAdapter implements StickyGridHeadersSim
                 @Override
                 public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                     Log.i("zhouwei","ImageLoader complete....");
-                    if(loadedImage!=null) {
+                   /* if(loadedImage!=null) {
                         viewHolder.photo.setImageBitmap(loadedImage);
 
-                    }
+                    }*/
                 }
 
                 @Override
@@ -86,7 +103,16 @@ public class TimeLineAdapter extends BaseAdapter implements StickyGridHeadersSim
                     Log.i("zhouwei","ImageLoader cancel....");
                 }
             });
-        }
+         viewHolder.photo.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 Bundle bundle = new Bundle();
+                 bundle.putInt("index",position);
+                 Intent intent = new Intent(mActivity,PhotoDetailActivity.class);
+                 intent.putExtras(bundle);
+                 mActivity.startActivity(intent);
+             }
+         });
         return convertView;
     }
 

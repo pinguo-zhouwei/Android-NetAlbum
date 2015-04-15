@@ -32,6 +32,10 @@
         <activity android:name=".AlbumActivity"
                   android:theme="@android:style/Theme.NoTitleBar"
                 />
+        <activity android:name=".PhotoDetailActivity"
+                  android:screenOrientation="portrait"
+                  android:theme="@android:style/Theme.NoTitleBar"
+                />
     </application>
 
 </manifest>

@@ -43,7 +43,8 @@ public class ImageScanner implements Runnable{
         parsePhotoInfo(cursor);
 
         List<PhotoItem> photoItemList = addHeaderId(mPhotoItems);
-
+        //排序
+        Collections.sort(photoItemList,new PhotoCompator());
         try {
             DBPhotoTable dbPhotoTable = new DBPhotoTable(SandBoxSql.getInstance());
             dbPhotoTable.insert(photoItemList);
@@ -51,8 +52,7 @@ public class ImageScanner implements Runnable{
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //排序
-        Collections.sort(photoItemList,new PhotoCompator());
+
         //回调
         if(mScanImageListener!=null){
             mScanImageListener.onScanImageComplete(photoItemList);

@@ -10,6 +10,7 @@ import java.util.Comparator;
 public class PhotoCompator implements Comparator<PhotoItem> {
     @Override
     public int compare(PhotoItem lhs, PhotoItem rhs) {
-        return (lhs.time).compareTo(rhs.time);
+
+      return (rhs.time).compareTo(lhs.time);
     }
 }

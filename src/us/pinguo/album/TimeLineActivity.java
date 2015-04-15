@@ -2,6 +2,7 @@ package us.pinguo.album;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 
@@ -12,7 +13,9 @@ import us.pinguo.db.SandBoxSql;
 import us.pinguo.model.ImageScanner;
 import us.pinguo.model.PhotoItem;
 import us.pinguo.stickygridheaders.StickyGridHeadersGridView;
+import us.pinguo.utils.PhotoCompator;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -43,9 +46,9 @@ public class TimeLineActivity extends Activity implements View.OnClickListener,I
         });*/
         mGridView = (StickyGridHeadersGridView) findViewById(R.id.timeline_gridView);
         mTextView = (TextView) findViewById(R.id.welcom_text);
-        mTimeLineAdapter = new TimeLineAdapter();
+        mTimeLineAdapter = new TimeLineAdapter(this);
         mGridView.setAdapter(mTimeLineAdapter);
-        mTimeLineAdapter.notifyDataSetChanged();
+      //  mTimeLineAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -61,9 +64,16 @@ public class TimeLineActivity extends Activity implements View.OnClickListener,I
                 imageScanner.setmScanImageListener(this);
                 new Thread(imageScanner).start();
             }else{
-              mTextView.setVisibility(View.GONE);
+              Collections.sort(photoItemList, new PhotoCompator());
               mTimeLineAdapter.setPhotoItemList(photoItemList);
-              mTimeLineAdapter.notifyDataSetChanged();
+              //
+              new Handler().postDelayed(new Runnable() {
+                  @Override
+                  public void run() {
+                      mTextView.setVisibility(View.GONE);
+                      mTimeLineAdapter.notifyDataSetChanged();
+                  }
+              },1000);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
