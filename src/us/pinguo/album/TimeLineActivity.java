@@ -1,12 +1,15 @@
 package us.pinguo.album;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 
+import android.widget.ImageView;
 import android.widget.TextView;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import org.w3c.dom.Text;
 import us.pinguo.db.DBPhotoTable;
 import us.pinguo.db.SandBoxSql;
@@ -26,6 +29,7 @@ public class TimeLineActivity extends Activity implements View.OnClickListener,I
     private TimeLineAdapter mTimeLineAdapter;
     private StickyGridHeadersGridView mGridView;
     private TextView mTextView;
+    private ImageView mTimeLineTopBg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,15 +39,8 @@ public class TimeLineActivity extends Activity implements View.OnClickListener,I
     }
 
     public void initView(){
-       /* mPullToRefreshListView = (PullToRefreshListView) findViewById(R.id.lv_dynamic_comment);
-        mPullToRefreshListView.setMode(PullToRefreshBase.Mode.BOTH);
-        mPullToRefreshListView.setScrollingWhileRefreshingEnabled(true);
-        mPullToRefreshListView.post(new Runnable() {
-            @Override
-            public void run() {
-                mPullToRefreshListView.setFooterText(getString(R.string.action_settings));
-            }
-        });*/
+        mTimeLineTopBg = (ImageView) findViewById(R.id.time_line_top_bg);
+        findViewById(R.id.btn_camera).setOnClickListener(this);
         mGridView = (StickyGridHeadersGridView) findViewById(R.id.timeline_gridView);
         mTextView = (TextView) findViewById(R.id.welcom_text);
         mTimeLineAdapter = new TimeLineAdapter(this);
@@ -65,6 +62,10 @@ public class TimeLineActivity extends Activity implements View.OnClickListener,I
                 new Thread(imageScanner).start();
             }else{
               Collections.sort(photoItemList, new PhotoCompator());
+
+              PhotoItem item = photoItemList.get(0);
+              ImageLoader.getInstance().displayImage("file://"+item.photoUri,mTimeLineTopBg);
+
               mTimeLineAdapter.setPhotoItemList(photoItemList);
               //
               new Handler().postDelayed(new Runnable() {
@@ -82,7 +83,12 @@ public class TimeLineActivity extends Activity implements View.OnClickListener,I
 
     @Override
     public void onClick(View v) {
-
+      switch (v.getId()){
+          case R.id.btn_camera:
+              Intent intent = new Intent(this,MainActivity.class);
+              startActivity(intent);
+              break;
+      }
     }
 
     @Override

@@ -1,19 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@android:color/white"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
         >
-  <!--  <com.handmark.pulltorefresh.library.PullToRefreshListView
-            android:id="@+id/lv_dynamic_comment"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="@android:color/white"
-            android:divider="@android:color/darker_gray"
-            android:dividerHeight="1px">
-    </com.handmark.pulltorefresh.library.PullToRefreshListView>-->
+    <RelativeLayout
+            android:id="@+id/time_line_top_layout"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            >
+        <ImageView android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:id="@+id/time_line_top_bg"
+                   android:scaleType="centerCrop"
+                   android:src="#CE00CE"
+                />
+    <ImageView android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:id="@+id/btn_camera"
+               android:src="@drawable/btn_capture"
+               android:layout_alignParentRight="true"
+               android:layout_marginRight="15dp"
+               android:layout_marginTop="15dp"
+            />
+    </RelativeLayout>
     <us.pinguo.stickygridheaders.StickyGridHeadersGridView
             android:id="@+id/timeline_gridView"
             android:layout_width="match_parent"
@@ -27,13 +39,14 @@
             android:verticalSpacing="3dp"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
+            android:layout_below="@+id/time_line_top_layout"
             >
     </us.pinguo.stickygridheaders.StickyGridHeadersGridView>
     <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
               android:id="@+id/welcom_text"
               android:layout_centerInParent="true"
-            android:text="精彩即將呈現..."
-            android:visibility="visible"
-            android:gravity="center"
+              android:text="精彩即將呈現..."
+              android:visibility="visible"
+              android:gravity="center"
             />
 </RelativeLayout>
