@@ -5,6 +5,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/white"
+                android:id="@+id/time_line_root_layout"
         >
     <RelativeLayout
             android:id="@+id/time_line_top_layout"
@@ -17,14 +18,14 @@
                    android:scaleType="centerCrop"
                    android:src="#CE00CE"
                 />
-    <ImageView android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:id="@+id/btn_camera"
-               android:src="@drawable/btn_capture"
-               android:layout_alignParentRight="true"
-               android:layout_marginRight="15dp"
-               android:layout_marginTop="15dp"
-            />
+        <ImageView android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:id="@+id/btn_camera"
+                   android:src="@drawable/btn_capture"
+                   android:layout_alignParentRight="true"
+                   android:layout_marginRight="15dp"
+                   android:layout_marginTop="15dp"
+                />
     </RelativeLayout>
     <us.pinguo.stickygridheaders.StickyGridHeadersGridView
             android:id="@+id/timeline_gridView"

@@ -8,13 +8,21 @@
             android:id="@+id/photo_bottom_view"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:gravity="center"
             android:layout_alignParentBottom="true"
             >
         <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
                    android:src="@drawable/photofilm_share_white_prs"
                 />
+        <TextView
+                android:id="@+id/btn_edit"
+                android:text="@string/edit_pic"
+                android:textSize="20dp"
+                android:padding="10dp"
+                android:gravity="center"
+                android:layout_marginLeft="100dp"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
     </LinearLayout>
     <android.support.v4.view.ViewPager
             android:id="@+id/photo_detail_viewPager"

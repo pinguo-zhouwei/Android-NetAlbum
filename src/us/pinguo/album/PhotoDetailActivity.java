@@ -1,7 +1,7 @@
 package us.pinguo.album;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -20,7 +20,6 @@ import us.pinguo.model.PhotoInfoCache;
 import us.pinguo.model.PhotoItem;
 
 import java.io.File;
-import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +27,7 @@ import java.util.Map;
 /**
  * Created by Mr 周先森 on 2015/4/15.
  */
-public class PhotoDetailActivity extends Activity implements SharePicViewDialog.ShareClickListener,View.OnClickListener{
+public class PhotoDetailActivity extends Activity implements SharePicViewDialog.ShareClickListener, View.OnClickListener, ViewPager.OnPageChangeListener {
     private ViewPager mViewPager;
     private List<PhotoItem> mPhotoItemList;
     private PhotoPagerAdapter mAdapter;
@@ -53,6 +52,7 @@ public class PhotoDetailActivity extends Activity implements SharePicViewDialog.
         mViewPager.setCurrentItem(mCurrentIndex);
         mAdapter.notifyDataSetChanged();
         findViewById(R.id.photo_bottom_view).setOnClickListener(this);
+        findViewById(R.id.btn_edit).setOnClickListener(this);
     }
 
     public void initData(){
@@ -62,6 +62,8 @@ public class PhotoDetailActivity extends Activity implements SharePicViewDialog.
         }
         PhotoInfoCache photoInfoCache = new PhotoInfoCache();
         mPhotoItemList = photoInfoCache.getPhoto();
+
+        mCurrentPhotoItem = mPhotoItemList.get(mCurrentIndex);
         Log.i("zhouwei","PhotoDetailActivity "+mPhotoItemList.size());
     }
 
@@ -120,11 +122,19 @@ public class PhotoDetailActivity extends Activity implements SharePicViewDialog.
       }
     }
 
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.photo_bottom_view:
                 showShareDialog();
+                break;
+            case R.id.btn_edit:
+                Bundle bundle = new Bundle();
+                bundle.putString("path", mCurrentPhotoItem.photoUri);
+                Intent intent = new Intent(this, EditPicActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
                 break;
         }
     }
@@ -135,6 +145,21 @@ public class PhotoDetailActivity extends Activity implements SharePicViewDialog.
             mSharePicViewDialog.setShareClickListener(this);
             mSharePicViewDialog.show();
         }
+    }
+
+    @Override
+    public void onPageScrolled(int i, float v, int i2) {
+
+    }
+
+    @Override
+    public void onPageSelected(int i) {
+        mCurrentPhotoItem = mPhotoItemList.get(i);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int i) {
+
     }
 
 
@@ -164,7 +189,7 @@ public class PhotoDetailActivity extends Activity implements SharePicViewDialog.
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             PhotoItem photoItem = mPhotoItemList.get(position);
-            mCurrentPhotoItem = photoItem;
+            // mCurrentPhotoItem = photoItem;
             Log.i("zhouwei","url:"+photoItem.photoUri);
             View view = LayoutInflater.from(container.getContext()).inflate(R.layout.photo_detail_item,null);
             ImageView imageView = (ImageView) view.findViewById(R.id.photo_detail_img);

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="us.pinguo.album" >
+          package="us.pinguo.album">
     <uses-sdk
             android:targetSdkVersion="19"
-            android:minSdkVersion="11"
+            android:minSdkVersion="14"
             android:maxSdkVersion="21"/>
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera" android:required="false" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera" android:required="false"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <!-- 开启闪光灯权限 -->
     <uses-permission android:name="android.permission.FLASHLIGHT"/>
     <application
@@ -15,15 +15,15 @@
             android:icon="@drawable/ic_launcher"
             android:label="@string/app_name"
             android:name="us.pinguo.MyApplication"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:theme="@android:style/Theme.NoTitleBar">
         <activity
                 android:name=".TimeLineActivity"
                 android:screenOrientation="portrait"
-                android:label="@string/app_name" >
+                android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity android:name=".SettingActivity"
@@ -37,6 +37,10 @@
                   android:theme="@android:style/Theme.NoTitleBar"
                 />
         <activity android:name=".MainActivity"
+                  android:screenOrientation="portrait"
+                  android:theme="@android:style/Theme.NoTitleBar"
+                />
+        <activity android:name=".EditPicActivity"
                   android:screenOrientation="portrait"
                   android:theme="@android:style/Theme.NoTitleBar"
                 />

@@ -6,11 +6,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import org.w3c.dom.Text;
+import us.pinguo.album.view.TimeLineLayout;
 import us.pinguo.db.DBPhotoTable;
 import us.pinguo.db.SandBoxSql;
 import us.pinguo.model.ImageScanner;
@@ -30,6 +29,8 @@ public class TimeLineActivity extends Activity implements View.OnClickListener,I
     private StickyGridHeadersGridView mGridView;
     private TextView mTextView;
     private ImageView mTimeLineTopBg;
+
+    private TimeLineLayout rootLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
