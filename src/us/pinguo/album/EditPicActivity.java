@@ -16,9 +16,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-import us.pinguo.album.effect.BlurImageEffect;
-import us.pinguo.album.effect.PictureSpecialEffects;
-import us.pinguo.album.effect.ReliefImageEffect;
+import us.pinguo.album.effect.*;
 import us.pinguo.album.view.HorizontalListView;
 
 /**
@@ -28,7 +26,7 @@ public class EditPicActivity extends Activity implements AdapterView.OnItemClick
     private HorizontalListView mEffectListView;
 
     private EffectAdapter mAdapter;
-    private String[] mEffectList = new String[]{"怀旧", "模糊", "浮雕"};
+    private String[] mEffectList = new String[]{"怀旧", "模糊", "浮雕", "底片", "黑白"};
     private String mPath;
     private ImageView mImageView;
 
@@ -102,6 +100,16 @@ public class EditPicActivity extends Activity implements AdapterView.OnItemClick
             case 2://浮雕
                 Log.i("FFF", "【特效--浮雕】");
                 bitmap = ReliefImageEffect.getReliefBitmap(mSourceBitmap);
+                mImageView.setImageBitmap(bitmap);
+                break;
+            case 3://底片
+                Log.i("FFF", "【特效--底片】");
+                bitmap = NegativeImageEffect.getReliefBitmap(mSourceBitmap);
+                mImageView.setImageBitmap(bitmap);
+                break;
+            case 4://黑白
+                Log.i("FFF", "【特效--黑白】");
+                bitmap = BlackImageEffect.getBlackBitmap(mSourceBitmap);
                 mImageView.setImageBitmap(bitmap);
                 break;
         }
