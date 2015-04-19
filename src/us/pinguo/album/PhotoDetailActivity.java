@@ -28,6 +28,7 @@ import java.util.Map;
  * Created by Mr 周先森 on 2015/4/15.
  */
 public class PhotoDetailActivity extends Activity implements SharePicViewDialog.ShareClickListener, View.OnClickListener, ViewPager.OnPageChangeListener {
+    private static final String TAG = PhotoDetailActivity.class.getSimpleName();
     private ViewPager mViewPager;
     private List<PhotoItem> mPhotoItemList;
     private PhotoPagerAdapter mAdapter;
@@ -51,6 +52,7 @@ public class PhotoDetailActivity extends Activity implements SharePicViewDialog.
         mViewPager.setAdapter(mAdapter);
         mViewPager.setCurrentItem(mCurrentIndex);
         mAdapter.notifyDataSetChanged();
+        mViewPager.setOnPageChangeListener(this);
         findViewById(R.id.photo_bottom_view).setOnClickListener(this);
         findViewById(R.id.btn_edit).setOnClickListener(this);
     }
@@ -154,6 +156,7 @@ public class PhotoDetailActivity extends Activity implements SharePicViewDialog.
 
     @Override
     public void onPageSelected(int i) {
+        Log.i(TAG, "position：" + i);
         mCurrentPhotoItem = mPhotoItemList.get(i);
     }
 

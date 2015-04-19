@@ -4,4 +4,7 @@
     <color name="color_main_bg">#75d2fb</color>
     <color name="title_bar_bg">#75d2fb</color>
     <color name="color_share_press">#eaeaea</color>
+
+    <color name="remember">#A98788</color>
+    <!-- 怀旧-->
 </resources>
