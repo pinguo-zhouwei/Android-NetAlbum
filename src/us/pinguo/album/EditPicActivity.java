@@ -18,6 +18,7 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import us.pinguo.album.effect.BlurImageEffect;
 import us.pinguo.album.effect.PictureSpecialEffects;
+import us.pinguo.album.effect.ReliefImageEffect;
 import us.pinguo.album.view.HorizontalListView;
 
 /**
@@ -27,7 +28,7 @@ public class EditPicActivity extends Activity implements AdapterView.OnItemClick
     private HorizontalListView mEffectListView;
 
     private EffectAdapter mAdapter;
-    private String[] mEffectList = new String[]{"怀旧", "模糊", "黑白"};
+    private String[] mEffectList = new String[]{"怀旧", "模糊", "浮雕"};
     private String mPath;
     private ImageView mImageView;
 
@@ -87,13 +88,22 @@ public class EditPicActivity extends Activity implements AdapterView.OnItemClick
             return;
         }
         Bitmap bitmap = null;
-        if (position == 0) {
-            bitmap = PictureSpecialEffects.getRememberEffect(mSourceBitmap);
-            mImageView.setImageBitmap(bitmap);
-        } else if (position == 1) {
-            Log.i("FFF", "【特效--模糊】");
-            Bitmap bmp = BlurImageEffect.blurImageAmeliorate(mSourceBitmap);
-            mImageView.setImageBitmap(bmp);
+        switch (position) {
+            case 0://怀旧
+                Log.i("FFF", "【特效--怀旧】");
+                bitmap = PictureSpecialEffects.getRememberEffect(mSourceBitmap);
+                mImageView.setImageBitmap(bitmap);
+                break;
+            case 1://模糊
+                Log.i("FFF", "【特效--模糊】");
+                Bitmap bmp = BlurImageEffect.blurImageAmeliorate(mSourceBitmap);
+                mImageView.setImageBitmap(bmp);
+                break;
+            case 2://浮雕
+                Log.i("FFF", "【特效--浮雕】");
+                bitmap = ReliefImageEffect.getReliefBitmap(mSourceBitmap);
+                mImageView.setImageBitmap(bitmap);
+                break;
         }
 
     }
