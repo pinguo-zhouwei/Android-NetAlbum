@@ -11,24 +11,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import us.pinguo.album.effect.*;
+import us.pinguo.album.utils.BitmapUtils;
+import us.pinguo.album.view.EffectImageView;
 import us.pinguo.album.view.HorizontalListView;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by Mr 周先森 on 2015/4/17.
  */
-public class EditPicActivity extends Activity implements AdapterView.OnItemClickListener {
+public class EditPicActivity extends Activity implements AdapterView.OnItemClickListener, View.OnClickListener {
+    private static final String TAG = EditPicActivity.class.getSimpleName();
     private HorizontalListView mEffectListView;
 
     private EffectAdapter mAdapter;
     private String[] mEffectList = new String[]{"怀旧", "模糊", "浮雕", "底片", "黑白"};
     private String mPath;
-    private ImageView mImageView;
+    private EffectImageView mImageView;
 
     private Bitmap mSourceBitmap;
 
@@ -47,7 +53,7 @@ public class EditPicActivity extends Activity implements AdapterView.OnItemClick
         if (TextUtils.isEmpty(mPath)) {
             return;
         }
-        mImageView = (ImageView) findViewById(R.id.edit_source_img);
+        mImageView = (EffectImageView) findViewById(R.id.edit_source_img);
         ImageLoader.getInstance().loadImage("file://" + mPath, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {
@@ -77,6 +83,7 @@ public class EditPicActivity extends Activity implements AdapterView.OnItemClick
         mEffectListView.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
         mEffectListView.setOnItemClickListener(this);
+        findViewById(R.id.btn_effect_img_save).setOnClickListener(this);
     }
 
     @Override
@@ -90,7 +97,7 @@ public class EditPicActivity extends Activity implements AdapterView.OnItemClick
             case 0://怀旧
                 Log.i("FFF", "【特效--怀旧】");
                 bitmap = PictureSpecialEffects.getRememberEffect(mSourceBitmap);
-                mImageView.setImageBitmap(bitmap);
+                mImageView.setImageBmp(bitmap);
                 break;
             case 1://模糊
                 Log.i("FFF", "【特效--模糊】");
@@ -100,20 +107,53 @@ public class EditPicActivity extends Activity implements AdapterView.OnItemClick
             case 2://浮雕
                 Log.i("FFF", "【特效--浮雕】");
                 bitmap = ReliefImageEffect.getReliefBitmap(mSourceBitmap);
-                mImageView.setImageBitmap(bitmap);
+                mImageView.setImageBmp(bitmap);
                 break;
             case 3://底片
                 Log.i("FFF", "【特效--底片】");
                 bitmap = NegativeImageEffect.getReliefBitmap(mSourceBitmap);
-                mImageView.setImageBitmap(bitmap);
+                mImageView.setImageBmp(bitmap);
                 break;
             case 4://黑白
                 Log.i("FFF", "【特效--黑白】");
                 bitmap = BlackImageEffect.getBlackBitmap(mSourceBitmap);
-                mImageView.setImageBitmap(bitmap);
+                mImageView.setImageBmp(bitmap);
                 break;
         }
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_effect_img_save:
+                Bitmap bitmap = mImageView.getBitmap();
+                if (bitmap == null) {
+                    return;
+                }
+                String path = generatePicPath();
+                if (path == null) {
+                    return;
+                }
+                try {
+                    BitmapUtils.saveBitmap(path, bitmap, 100);
+                    Toast.makeText(this, R.string.save_pic_path, Toast.LENGTH_SHORT).show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
+    }
+
+    private String generatePicPath() {
+        File file = new File(AlbumConstant.EFFECT_PIC_PATH);
+        if (!file.exists()) {
+            if (!file.mkdirs()) {
+                Log.i(TAG, "create file failed");
+                return null;
+            }
+        }
+        return file.getAbsolutePath() + "/" + "effect_img_" + System.currentTimeMillis() + ".jpg";
     }
 
     class EffectAdapter extends BaseAdapter {

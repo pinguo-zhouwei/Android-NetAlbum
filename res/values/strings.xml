@@ -10,4 +10,5 @@
     <string name="baby_vedio_share_to">分享到</string>
     <string name="edit_pic">编辑</string>
     <string name="special_effect">精选特效</string>
+    <string name="save_pic_path">照片已保存至effect_pic</string>
 </resources>

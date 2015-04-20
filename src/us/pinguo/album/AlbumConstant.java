@@ -19,4 +19,8 @@ public class AlbumConstant {
      * 数据库文件路径
      */
     public static final String SAND_B0X_DB_PATH = SAND_B0X_ROOT + "sandbox.db";
+    /**
+     * 特效 照片保存路径
+     */
+    public static final String EFFECT_PIC_PATH = NETALBUM_ROOT + "/TempData/effect_pic";
 }
