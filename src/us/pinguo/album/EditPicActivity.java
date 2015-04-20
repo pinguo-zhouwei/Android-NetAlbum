@@ -20,6 +20,7 @@ import us.pinguo.album.effect.*;
 import us.pinguo.album.utils.BitmapUtils;
 import us.pinguo.album.view.EffectImageView;
 import us.pinguo.album.view.HorizontalListView;
+import us.pinguo.model.Storage;
 
 import java.io.File;
 import java.io.IOException;
@@ -138,6 +139,8 @@ public class EditPicActivity extends Activity implements AdapterView.OnItemClick
                 try {
                     BitmapUtils.saveBitmap(path, bitmap, 100);
                     Toast.makeText(this, R.string.save_pic_path, Toast.LENGTH_SHORT).show();
+                    Storage.addStorage(this, path);//插入媒体数据库
+                    this.finish();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
