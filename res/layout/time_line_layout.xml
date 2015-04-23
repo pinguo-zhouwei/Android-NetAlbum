@@ -26,6 +26,14 @@
                    android:layout_marginRight="15dp"
                    android:layout_marginTop="15dp"
                 />
+        <TextView
+                android:id="@+id/btn_my_album"
+                android:layout_width="wrap_content"
+                android:textSize="30dp"
+                android:padding="15dp"
+                android:layout_height="wrap_content"
+                android:text="@string/secret_album"
+                />
     </RelativeLayout>
     <us.pinguo.stickygridheaders.StickyGridHeadersGridView
             android:id="@+id/timeline_gridView"

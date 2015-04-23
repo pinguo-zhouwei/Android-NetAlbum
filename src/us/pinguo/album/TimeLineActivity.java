@@ -12,6 +12,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import us.pinguo.album.view.TimeLineLayout;
 import us.pinguo.db.DBPhotoTable;
 import us.pinguo.db.SandBoxSql;
+import us.pinguo.login.LoginActivity;
 import us.pinguo.model.ImageScanner;
 import us.pinguo.model.PhotoItem;
 import us.pinguo.stickygridheaders.StickyGridHeadersGridView;
@@ -23,14 +24,15 @@ import java.util.List;
 /**
  * Created by Mr 周先森 on 2015/4/4.
  */
-public class TimeLineActivity extends Activity implements View.OnClickListener,ImageScanner.ScanImageListener{
-   // private PullToRefreshListView  mPullToRefreshListView;
+public class TimeLineActivity extends Activity implements View.OnClickListener, ImageScanner.ScanImageListener {
+    // private PullToRefreshListView  mPullToRefreshListView;
     private TimeLineAdapter mTimeLineAdapter;
     private StickyGridHeadersGridView mGridView;
     private TextView mTextView;
     private ImageView mTimeLineTopBg;
 
     private TimeLineLayout rootLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,14 +41,15 @@ public class TimeLineActivity extends Activity implements View.OnClickListener,I
 
     }
 
-    public void initView(){
+    public void initView() {
         mTimeLineTopBg = (ImageView) findViewById(R.id.time_line_top_bg);
         findViewById(R.id.btn_camera).setOnClickListener(this);
         mGridView = (StickyGridHeadersGridView) findViewById(R.id.timeline_gridView);
         mTextView = (TextView) findViewById(R.id.welcom_text);
         mTimeLineAdapter = new TimeLineAdapter(this);
         mGridView.setAdapter(mTimeLineAdapter);
-      //  mTimeLineAdapter.notifyDataSetChanged();
+        //  mTimeLineAdapter.notifyDataSetChanged();
+        findViewById(R.id.btn_my_album).setOnClickListener(this);
     }
 
     @Override
@@ -56,26 +59,26 @@ public class TimeLineActivity extends Activity implements View.OnClickListener,I
         try {
             DBPhotoTable dbPhotoTable = new DBPhotoTable(SandBoxSql.getInstance());
             photoItemList = dbPhotoTable.queryPhoto();
-            Log.i("TimeLineActivity","TimeLineActivity size:"+photoItemList.size());
-            if(photoItemList==null||photoItemList.size() == 0){
+            Log.i("TimeLineActivity", "TimeLineActivity size:" + photoItemList.size());
+            if (photoItemList == null || photoItemList.size() == 0) {
                 ImageScanner imageScanner = new ImageScanner(this);
                 imageScanner.setmScanImageListener(this);
                 new Thread(imageScanner).start();
-            }else{
-              Collections.sort(photoItemList, new PhotoCompator());
+            } else {
+                Collections.sort(photoItemList, new PhotoCompator());
 
-              PhotoItem item = photoItemList.get(0);
-              ImageLoader.getInstance().displayImage("file://"+item.photoUri,mTimeLineTopBg);
+                PhotoItem item = photoItemList.get(0);
+                ImageLoader.getInstance().displayImage("file://" + item.photoUri, mTimeLineTopBg);
 
-              mTimeLineAdapter.setPhotoItemList(photoItemList);
-              //
-              new Handler().postDelayed(new Runnable() {
-                  @Override
-                  public void run() {
-                      mTextView.setVisibility(View.GONE);
-                      mTimeLineAdapter.notifyDataSetChanged();
-                  }
-              },1000);
+                mTimeLineAdapter.setPhotoItemList(photoItemList);
+                //
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mTextView.setVisibility(View.GONE);
+                        mTimeLineAdapter.notifyDataSetChanged();
+                    }
+                }, 1000);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -84,12 +87,17 @@ public class TimeLineActivity extends Activity implements View.OnClickListener,I
 
     @Override
     public void onClick(View v) {
-      switch (v.getId()){
-          case R.id.btn_camera:
-              Intent intent = new Intent(this,MainActivity.class);
-              startActivity(intent);
-              break;
-      }
+        Intent intent;
+        switch (v.getId()) {
+            case R.id.btn_camera:
+                intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.btn_my_album:
+                intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                break;
+        }
     }
 
     @Override
