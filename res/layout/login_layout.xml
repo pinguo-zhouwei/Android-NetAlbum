@@ -16,7 +16,7 @@
                 android:id="@+id/login_user_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textCapCharacters"
+                android:inputType="textEmailAddress"
                 android:focusable="true"
                 android:hint="@string/login_hint_text_user_name"
                 />
@@ -26,18 +26,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:inputType="textPassword"
                 android:hint="@string/login_hint_text_pass"
                 />
 
         <Button
-                android:id="@+id/btn_login"
+                android:id="@+id/btn_user_login"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/pg_invitation_by_wx_btn_background"
                 android:gravity="center"
                 android:text="@string/login"
-                android:enabled="false"
                 android:textColor="@android:color/white"
                 android:textSize="15sp"/>
     </LinearLayout>

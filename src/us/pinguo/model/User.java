@@ -7,5 +7,5 @@ public class User {
     public String userId;
     public String userName;
     public String createTime;
-    public String passWord;
+    public String password;
 }
