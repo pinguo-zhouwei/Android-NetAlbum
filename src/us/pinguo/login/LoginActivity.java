@@ -42,12 +42,9 @@ public class LoginActivity extends AsyncTaskActivity implements View.OnClickList
         Log.i(TAG, "haha.........");
         switch (v.getId()) {
             case R.id.btn_user_login:
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        userLogin();
-                    }
-                }).start();
+                hideSoftwareKeyboard(mEditPass);
+                hideSoftwareKeyboard(mEditUserName);
+                userLogin();
 
                 break;
         }
@@ -63,23 +60,19 @@ public class LoginActivity extends AsyncTaskActivity implements View.OnClickList
         }
 
         doLogin(userName, pass);
-        /*AlbumManager manager = new AlbumManager(this);
-        boolean isSuccess = manager.login(userName,pass);
-        if(isSuccess){
-            Toast.makeText(this,"登录成功",Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(this,"登录失败",Toast.LENGTH_SHORT).show();
-        }*/
+
     }
 
     public void doLogin(String userName, String password) {
         AlbumManager manager = new AlbumManager(this);
+        showProgressDialog();
         attachAsyncTaskResult(manager.userLogin(userName, password), new AsyncResult<User>() {
             @Override
             public void onSuccess(User user) {
+                hideProgressDialog();
                 Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                 if (user != null) {
-                    Log.i(TAG, "UserName:" + user.userName + "  pass:" + user.passWord);
+                    Log.i(TAG, "UserName:" + user.userName + "  pass:" + user.password);
                 }
             }
 
