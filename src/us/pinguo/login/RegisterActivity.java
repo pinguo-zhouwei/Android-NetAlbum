@@ -16,7 +16,7 @@ import us.pinguo.network.AsyncResult;
 /**
  * Created by Mr 周先森 on 2015/4/22.
  */
-public class LoginActivity extends AsyncTaskActivity implements View.OnClickListener {
+public class RegisterActivity extends AsyncTaskActivity implements View.OnClickListener {
     private static final String TAG = "LoginActivity";
     private EditText mEditUserName;
     private EditText mEditPass;
@@ -70,7 +70,7 @@ public class LoginActivity extends AsyncTaskActivity implements View.OnClickList
             @Override
             public void onSuccess(User user) {
                 hideProgressDialog();
-                Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                 if (user != null) {
                     Log.i(TAG, "UserName:" + user.userName + "  pass:" + user.password);
                 }
@@ -78,7 +78,8 @@ public class LoginActivity extends AsyncTaskActivity implements View.OnClickList
 
             @Override
             public void onError(Exception e) {
-                Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+                hideProgressDialog();
+                Toast.makeText(RegisterActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
             }
         });
     }

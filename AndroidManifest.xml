@@ -45,7 +45,7 @@
                   android:screenOrientation="portrait"
                   android:theme="@android:style/Theme.NoTitleBar"
                 />
-        <activity android:name="us.pinguo.login.LoginActivity"
+        <activity android:name="us.pinguo.login.RegisterActivity"
                   android:screenOrientation="portrait"
                   android:theme="@android:style/Theme.NoTitleBar"
                 />

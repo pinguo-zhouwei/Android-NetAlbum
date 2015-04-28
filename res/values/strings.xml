@@ -13,6 +13,7 @@
     <string name="special_effect">精选特效</string>
     <string name="save_pic_path">照片已保存至effect_pic</string>
     <string name="login">登录</string>
+    <string name="register">注册</string>
     <string name="login_hint_text_user_name">请输入你的手机号或邮箱</string>
     <string name="login_hint_text_pass">请输入6-20位字符密码</string>
     <string name="please_wait">请稍后...</string>

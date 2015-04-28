@@ -10,7 +10,6 @@ import us.pinguo.network.BaseResponse;
  * Created by Mr 周先森 on 2015/4/24.
  */
 public class AlbumManager {
-
     private static final String TAG = AlbumManager.class.getSimpleName();
     private Context mContext;
 
@@ -26,7 +25,8 @@ public class AlbumManager {
             @Override
             public User adapt(BaseResponse<User> userBaseResponse) throws Exception {
                 //数据库操作
-
+                UserInfoCache userInfoCache = new UserInfoCache();
+                userInfoCache.saveUser(userBaseResponse.data);
 
                 return userBaseResponse.data;
             }
