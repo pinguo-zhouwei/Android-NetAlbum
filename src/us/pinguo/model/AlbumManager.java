@@ -1,7 +1,9 @@
 package us.pinguo.model;
 
 import android.content.Context;
+import android.text.TextUtils;
 import us.pinguo.api.ApiLogin;
+import us.pinguo.api.ApiRegister;
 import us.pinguo.async.AsyncFutureAdapter;
 import us.pinguo.network.AsyncFuture;
 import us.pinguo.network.BaseResponse;
@@ -19,7 +21,7 @@ public class AlbumManager {
 
     //登录
     public AsyncFuture<User> userLogin(String userName, String pass) {
-        ApiLogin apiLogin = new ApiLogin(userName, pass, String.valueOf(System.currentTimeMillis()), mContext);
+        ApiLogin apiLogin = new ApiLogin(userName, pass, mContext);
         return new AsyncFutureAdapter<User, BaseResponse<User>>(apiLogin) {
 
             @Override
@@ -33,7 +35,19 @@ public class AlbumManager {
         };
     }
 
-
+    //注册
+    public AsyncFuture<String> userRegister(String userName, String password) {
+        ApiRegister apiRegister = new ApiRegister(mContext, userName, password, String.valueOf(System.currentTimeMillis()));
+        return new AsyncFutureAdapter<String, ApiRegister.Res>(apiRegister) {
+            @Override
+            public String adapt(ApiRegister.Res res) throws Exception {
+                if (TextUtils.isEmpty(res.userName) || TextUtils.isEmpty(res.pass)) {
+                    return "";
+                }
+                return res.userName;
+            }
+        };
+    }
     //获取照片
 
     //上传照片

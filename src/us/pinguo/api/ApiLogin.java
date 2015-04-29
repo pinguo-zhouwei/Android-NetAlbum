@@ -21,14 +21,11 @@ public class ApiLogin extends ApiAsyncTaskBase<BaseResponse<User>> {
     public static final String url = AlbumConstant.HEADER + "YouthDrinking/servlet/LoginServlet";
     private String mUserName;
     private String mPassword;
-    private String mCreateTime;
-    private Context mContext;
 
-    public ApiLogin(String userName, String password, String createTime, Context context) {
+    public ApiLogin(String userName, String password, Context context) {
         super(context);
         this.mUserName = userName;
         mPassword = password;
-        mCreateTime = createTime;
     }
 
 
@@ -41,7 +38,6 @@ public class ApiLogin extends ApiAsyncTaskBase<BaseResponse<User>> {
 
                 params.put("userName", mUserName);
                 params.put("password", mPassword);
-                params.put("createTime", mCreateTime);
                 return params;
             }
 

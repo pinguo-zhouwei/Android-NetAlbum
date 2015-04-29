@@ -17,4 +17,6 @@
     <string name="login_hint_text_user_name">请输入你的手机号或邮箱</string>
     <string name="login_hint_text_pass">请输入6-20位字符密码</string>
     <string name="please_wait">请稍后...</string>
+    <string name="third_site_login">使用第三方登录</string>
+    <string name="please_register">立即注册</string>
 </resources>

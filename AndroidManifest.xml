@@ -49,6 +49,14 @@
                   android:screenOrientation="portrait"
                   android:theme="@android:style/Theme.NoTitleBar"
                 />
+        <activity android:name="us.pinguo.login.LoginActivity"
+                  android:screenOrientation="portrait"
+                  android:theme="@android:style/Theme.NoTitleBar"
+                />
+        <activity android:name=".NetAlbumActivity"
+                  android:screenOrientation="portrait"
+                  android:theme="@android:style/Theme.NoTitleBar"
+                />
     </application>
 
 </manifest>

@@ -13,7 +13,7 @@
                   android:orientation="vertical"
             >
         <EditText
-                android:id="@+id/login_user_name"
+                android:id="@+id/register_user_name"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:inputType="textEmailAddress"
@@ -23,7 +23,7 @@
                 />
 
         <EditText
-                android:id="@+id/login_pass"
+                android:id="@+id/register_pass"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="20dp"
@@ -33,35 +33,15 @@
                 />
 
         <Button
-                android:id="@+id/btn_user_login"
+                android:id="@+id/btn_register_login"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="40dp"
                 android:background="@drawable/pg_invitation_by_wx_btn_background"
                 android:gravity="center"
-                android:text="@string/login"
+                android:text="@string/register"
                 android:textColor="@android:color/white"
                 android:textSize="15sp"/>
     </LinearLayout>
-    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
-        <TextView android:id="@+id/login_third_site"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="@string/third_site_login"
-                  android:textSize="18sp"
-                  android:paddingLeft="10dp"
-                  android:paddingRight="10dp"
-                  android:textColor="@color/green_light"
-                />
-        <TextView android:id="@+id/login_register"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="@string/please_register"
-                  android:textSize="18sp"
-                  android:paddingLeft="10dp"
-                  android:paddingRight="10dp"
-                  android:textColor="@color/green_light"
-                  android:layout_alignParentRight="true"
-                />
-    </RelativeLayout>
+
 </LinearLayout>

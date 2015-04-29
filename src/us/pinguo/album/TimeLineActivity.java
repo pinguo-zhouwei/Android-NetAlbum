@@ -12,7 +12,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import us.pinguo.album.view.TimeLineLayout;
 import us.pinguo.db.DBPhotoTable;
 import us.pinguo.db.SandBoxSql;
-import us.pinguo.login.RegisterActivity;
+import us.pinguo.login.LoginActivity;
 import us.pinguo.model.ImageScanner;
 import us.pinguo.model.PhotoItem;
 import us.pinguo.stickygridheaders.StickyGridHeadersGridView;
@@ -94,7 +94,7 @@ public class TimeLineActivity extends Activity implements View.OnClickListener, 
                 startActivity(intent);
                 break;
             case R.id.btn_my_album:
-                intent = new Intent(this, RegisterActivity.class);
+                intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
                 break;
         }

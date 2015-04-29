@@ -1,5 +1,6 @@
 package us.pinguo.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -10,14 +11,13 @@ import android.widget.Toast;
 import us.pinguo.album.AsyncTaskActivity;
 import us.pinguo.album.R;
 import us.pinguo.model.AlbumManager;
-import us.pinguo.model.User;
 import us.pinguo.network.AsyncResult;
 
 /**
  * Created by Mr 周先森 on 2015/4/22.
  */
 public class RegisterActivity extends AsyncTaskActivity implements View.OnClickListener {
-    private static final String TAG = "LoginActivity";
+    private static final String TAG = "RegisterActivity";
     private EditText mEditUserName;
     private EditText mEditPass;
     private Button mBtnLogin;
@@ -25,14 +25,14 @@ public class RegisterActivity extends AsyncTaskActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_layout);
+        setContentView(R.layout.register_layout);
         initView();
     }
 
     private void initView() {
-        mEditPass = (EditText) findViewById(R.id.login_pass);
-        mEditUserName = (EditText) findViewById(R.id.login_user_name);
-        mBtnLogin = (Button) findViewById(R.id.btn_user_login);
+        mEditPass = (EditText) findViewById(R.id.register_pass);
+        mEditUserName = (EditText) findViewById(R.id.register_user_name);
+        mBtnLogin = (Button) findViewById(R.id.btn_register_login);
         mBtnLogin.setOnClickListener(this);
 
     }
@@ -41,16 +41,16 @@ public class RegisterActivity extends AsyncTaskActivity implements View.OnClickL
     public void onClick(View v) {
         Log.i(TAG, "haha.........");
         switch (v.getId()) {
-            case R.id.btn_user_login:
+            case R.id.btn_register_login:
                 hideSoftwareKeyboard(mEditPass);
                 hideSoftwareKeyboard(mEditUserName);
-                userLogin();
+                userRegister();
 
                 break;
         }
     }
 
-    public void userLogin() {
+    public void userRegister() {
         Log.i(TAG, "haha.........");
         String userName = mEditUserName.getText().toString().trim();
         String pass = mEditPass.getText().toString().trim();
@@ -59,27 +59,30 @@ public class RegisterActivity extends AsyncTaskActivity implements View.OnClickL
             return;
         }
 
-        doLogin(userName, pass);
+        doRegister(userName, pass);
 
     }
 
-    public void doLogin(String userName, String password) {
+    public void doRegister(String userName, String password) {
         AlbumManager manager = new AlbumManager(this);
         showProgressDialog();
-        attachAsyncTaskResult(manager.userLogin(userName, password), new AsyncResult<User>() {
+        attachAsyncTaskResult(manager.userRegister(userName, password), new AsyncResult<String>() {
             @Override
-            public void onSuccess(User user) {
+            public void onSuccess(String userName) {
                 hideProgressDialog();
-                Toast.makeText(RegisterActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
-                if (user != null) {
-                    Log.i(TAG, "UserName:" + user.userName + "  pass:" + user.password);
-                }
+                Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putString("userName", userName);
+                intent.putExtras(bundle);
+                setResult(RESULT_OK, intent);
+                RegisterActivity.this.finish();
             }
 
             @Override
             public void onError(Exception e) {
                 hideProgressDialog();
-                Toast.makeText(RegisterActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this, "注册失败", Toast.LENGTH_SHORT).show();
             }
         });
     }
