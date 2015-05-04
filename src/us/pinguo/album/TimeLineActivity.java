@@ -9,12 +9,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import us.pinguo.album.view.CommonAlertDialog;
 import us.pinguo.album.view.TimeLineLayout;
 import us.pinguo.db.DBPhotoTable;
 import us.pinguo.db.SandBoxSql;
 import us.pinguo.login.LoginActivity;
 import us.pinguo.model.ImageScanner;
 import us.pinguo.model.PhotoItem;
+import us.pinguo.model.UserInfoCache;
 import us.pinguo.stickygridheaders.StickyGridHeadersGridView;
 import us.pinguo.utils.PhotoCompator;
 
@@ -94,10 +96,32 @@ public class TimeLineActivity extends Activity implements View.OnClickListener, 
                 startActivity(intent);
                 break;
             case R.id.btn_my_album:
-                intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
+                UserInfoCache userInfoCache = new UserInfoCache();
+                if (userInfoCache.isLogin()) {
+                    intent = new Intent(this, NetAlbumActivity.class);
+                    startActivity(intent);
+                } else {
+                    showDialog();
+                }
                 break;
         }
+    }
+
+
+    private void showDialog() {
+        CommonAlertDialog alertDialog = new CommonAlertDialog(this, getString(R.string.login_tips));
+        alertDialog.setCancelable(true);
+        alertDialog.setCanceledOnTouchOutside(false);
+        CommonAlertDialog.PositiveOnClickLister positiveOnClickLister = new CommonAlertDialog.PositiveOnClickLister() {
+            @Override
+            public void onClick(CommonAlertDialog dialog) {
+                dialog.dismiss();
+                Intent intent = new Intent(TimeLineActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        };
+        alertDialog.setPositiveOnClickLister(positiveOnClickLister);
+        alertDialog.show();
     }
 
     @Override

@@ -47,6 +47,9 @@ public class EditPicActivity extends Activity implements AdapterView.OnItemClick
     }
 
     public void initView() {
+        TextView textView = (TextView) findViewById(R.id.title_text_title);
+        textView.setText(R.string.edit_pic);
+        findViewById(R.id.title_back_btn).setOnClickListener(this);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             mPath = bundle.getString("path");
@@ -144,6 +147,9 @@ public class EditPicActivity extends Activity implements AdapterView.OnItemClick
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                break;
+            case R.id.title_back_btn:
+                finish();
                 break;
         }
     }

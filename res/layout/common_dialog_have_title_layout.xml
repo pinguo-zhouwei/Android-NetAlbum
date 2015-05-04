@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:gravity="center"
+              android:background="@android:color/transparent"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+            android:layout_width="290dp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="135dp"
+                android:orientation="vertical"
+                android:background="@drawable/common_dialog"
+                >
+
+            <TextView
+                    android:id="@+id/common_dialog_have_title_Title"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:gravity="center_horizontal|bottom"
+                    android:textColor="@color/dialog_content_color"
+                    android:textSize="17sp"
+                    android:text=""
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    />
+
+            <TextView
+                    android:id="@+id/common_dialog_have_title_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="90dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/dialog_content_color"
+                    android:textSize="15sp"
+                    android:lineSpacingMultiplier="1.3"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingBottom="10dp"
+                    />
+        </LinearLayout>
+        <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+            <LinearLayout
+                    android:id="@+id/dialog_bottom_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:orientation="horizontal"
+                    >
+                <TextView
+                        android:id="@+id/common_dialog_have_title_btn_cancel"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@string/string_cancel"
+                        android:textSize="16sp"
+                        android:textColor="@color/dialog_btn_color"
+                        android:gravity="center"
+                        android:background="@drawable/alert_dialog_btn_cancel_selector"
+                        />
+                <TextView
+                        android:id="@+id/common_dialog_have_title_btn_ok"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@string/string_ok"
+                        android:textSize="16sp"
+                        android:textColor="@color/dialog_btn_color"
+                        android:gravity="center"
+                        android:background="@drawable/alert_dialog_btn_ok_selector"
+                        />
+
+
+            </LinearLayout>
+            <TextView
+                    android:id="@+id/common_dialog_bottom_btn_ok"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:text="@string/string_ok"
+                    android:background="@drawable/alert_dialog_one_btn_selector"
+                    android:textSize="16sp"
+                    android:textColor="@color/dialog_btn_color"
+                    android:gravity="center"
+                    android:visibility="visible"
+                    />
+        </FrameLayout>
+    </LinearLayout>
+</LinearLayout>

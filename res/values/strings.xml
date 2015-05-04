@@ -19,4 +19,8 @@
     <string name="please_wait">请稍后...</string>
     <string name="third_site_login">使用第三方登录</string>
     <string name="please_register">立即注册</string>
+    <string name="string_cancel">取消</string>
+    <string name="string_ok">确定</string>
+    <string name="login_tips">亲，你还没有登录哦！赶快登录吧~</string>
+
 </resources>

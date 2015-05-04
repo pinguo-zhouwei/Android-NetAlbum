@@ -32,7 +32,7 @@ public class CommonProgressDialog extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.common_dialog_layout);
+        setContentView(R.layout.common_progeress_dialog_layout);
         initView();
     }
 

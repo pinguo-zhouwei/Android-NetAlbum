@@ -1,35 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-    <LinearLayout
-            android:id="@+id/photo_bottom_view"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_alignParentBottom="true"
-            >
-        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                   android:src="@drawable/photofilm_share_white_prs"
-                />
-        <TextView
-                android:id="@+id/btn_edit"
-                android:text="@string/edit_pic"
-                android:textSize="20dp"
-                android:padding="10dp"
+    <include layout="@layout/album_title_layout"/>
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
+        <LinearLayout
+                android:id="@+id/photo_bottom_view"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
                 android:gravity="center"
-                android:layout_marginLeft="100dp"
-                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-    </LinearLayout>
-    <android.support.v4.view.ViewPager
-            android:id="@+id/photo_detail_viewPager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/photo_bottom_view"
-            >
-    </android.support.v4.view.ViewPager>
+                android:layout_alignParentBottom="true"
+                >
+            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                       android:src="@drawable/photofilm_share_white_prs"
+                    />
+            <TextView
+                    android:id="@+id/btn_edit"
+                    android:text="@string/edit_pic"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:layout_marginLeft="100dp"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        </LinearLayout>
 
-</RelativeLayout>
+        <android.support.v4.view.ViewPager
+                android:id="@+id/photo_detail_viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/black_light"
+                android:layout_above="@+id/photo_bottom_view"
+                >
+        </android.support.v4.view.ViewPager>
+    </RelativeLayout>
+
+
+</LinearLayout>

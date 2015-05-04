@@ -7,11 +7,12 @@ import android.content.SharedPreferences;
  * Created by Mr 周先森 on 2015/4/13.
  */
 public class MyAlbum {
-    private  static Context sAppContext;
+    private static Context sAppContext;
     private static SharedPreferences mSharedPreferences;
-    public static void createInstance(Context context){
+
+    public static void createInstance(Context context) {
         sAppContext = context;
-        mSharedPreferences = sAppContext.getSharedPreferences("album", Context.MODE_PRIVATE);
+        // mSharedPreferences = sAppContext.getSharedPreferences("album", Context.MODE_PRIVATE);
     }
 
     public static Context getAppContext() {
@@ -19,7 +20,6 @@ public class MyAlbum {
     }
 
     public static SharedPreferences getSharedPreferences() {
-
-        return mSharedPreferences;
+        return sAppContext.getSharedPreferences("album", Context.MODE_PRIVATE);
     }
 }

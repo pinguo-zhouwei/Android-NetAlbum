@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
@@ -45,6 +46,8 @@ public class PhotoDetailActivity extends Activity implements SharePicViewDialog.
     }
 
     public void initView(){
+        TextView tvTitile = (TextView) findViewById(R.id.title_text_title);
+        tvTitile.setText(R.string.big_pic);
         mViewPager = (ViewPager) findViewById(R.id.photo_detail_viewPager);
         //设置ViewPager的切换动画
         mViewPager.setPageTransformer(true,new ZoomOutPageTransformer());
@@ -55,6 +58,7 @@ public class PhotoDetailActivity extends Activity implements SharePicViewDialog.
         mViewPager.setOnPageChangeListener(this);
         findViewById(R.id.photo_bottom_view).setOnClickListener(this);
         findViewById(R.id.btn_edit).setOnClickListener(this);
+        findViewById(R.id.title_back_btn).setOnClickListener(this);
     }
 
     public void initData(){
@@ -137,6 +141,9 @@ public class PhotoDetailActivity extends Activity implements SharePicViewDialog.
                 Intent intent = new Intent(this, EditPicActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
+                break;
+            case R.id.title_back_btn:
+                finish();
                 break;
         }
     }

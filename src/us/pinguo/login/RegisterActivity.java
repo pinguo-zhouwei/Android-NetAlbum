@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import us.pinguo.album.AsyncTaskActivity;
 import us.pinguo.album.R;
@@ -30,6 +31,9 @@ public class RegisterActivity extends AsyncTaskActivity implements View.OnClickL
     }
 
     private void initView() {
+        TextView textView = (TextView) findViewById(R.id.title_text_title);
+        textView.setText(R.string.register);
+        findViewById(R.id.title_back_btn).setOnClickListener(this);
         mEditPass = (EditText) findViewById(R.id.register_pass);
         mEditUserName = (EditText) findViewById(R.id.register_user_name);
         mBtnLogin = (Button) findViewById(R.id.btn_register_login);
@@ -46,6 +50,9 @@ public class RegisterActivity extends AsyncTaskActivity implements View.OnClickL
                 hideSoftwareKeyboard(mEditUserName);
                 userRegister();
 
+                break;
+            case R.id.title_back_btn:
+                finish();
                 break;
         }
     }
