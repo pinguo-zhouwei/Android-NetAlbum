@@ -33,6 +33,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
                 "photoId varchar(32)," +
                 "time varchar(20)," +
                 "headerId integer," +
+                "isUpload integer," +
                 "path varchar(100))";
         db.execSQL(sql);
     }

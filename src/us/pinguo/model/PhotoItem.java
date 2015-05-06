@@ -11,6 +11,7 @@ public class PhotoItem {
      * headerId 用来分组照片
      */
     public int headerId;
+    public int isUpload = 0;//0表示未上传，1表示上传
     public PhotoItem(){
 
     }

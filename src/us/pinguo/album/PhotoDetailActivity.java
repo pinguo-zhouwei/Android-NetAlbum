@@ -66,8 +66,8 @@ public class PhotoDetailActivity extends Activity implements SharePicViewDialog.
         if(bundle!=null){
             mCurrentIndex = bundle.getInt("index");
         }
-        PhotoInfoCache photoInfoCache = new PhotoInfoCache();
-        mPhotoItemList = photoInfoCache.getPhoto();
+        //  PhotoInfoCache photoInfoCache = new PhotoInfoCache();
+        mPhotoItemList = PhotoInfoCache.getLocalPhoto();
 
         mCurrentPhotoItem = mPhotoItemList.get(mCurrentIndex);
         Log.i("zhouwei","PhotoDetailActivity "+mPhotoItemList.size());

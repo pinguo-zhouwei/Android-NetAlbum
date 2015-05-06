@@ -6,8 +6,21 @@
               android:layout_height="match_parent"
               android:background="@android:color/white"
         >
-    <TextView android:layout_width="match_parent"
+    <TextView
+            android:id="@+id/btn_photo_import"
+            android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:text="这是网络相册"
+              android:text="导入照片"
+              android:padding="10dp"
             />
+    <GridView
+            android:id="@+id/net_album_grid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:numColumns="3"
+            android:horizontalSpacing="5dp"
+            android:verticalSpacing="5dp"
+            >
+    </GridView>
 </LinearLayout>

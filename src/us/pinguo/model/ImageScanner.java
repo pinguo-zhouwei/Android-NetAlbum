@@ -8,8 +8,6 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import us.pinguo.db.DBPhotoTable;
-import us.pinguo.db.SandBoxSql;
 import us.pinguo.utils.DateUtils;
 import us.pinguo.utils.PhotoCompator;
 
@@ -33,7 +31,7 @@ public class ImageScanner implements Runnable{
         //先发送广播扫描下整个sd卡
         mContext.sendBroadcast(new Intent(
                 Intent.ACTION_MEDIA_MOUNTED,
-                Uri.parse("file://" + Environment.getExternalStorageDirectory())));
+                Uri.parse("file://" + Environment.getExternalStorageDirectory() + "/DCIM/Camera")));
 
         Uri mImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         ContentResolver mContentResolver = mContext.getContentResolver();
@@ -45,13 +43,13 @@ public class ImageScanner implements Runnable{
         List<PhotoItem> photoItemList = addHeaderId(mPhotoItems);
         //排序
         Collections.sort(photoItemList,new PhotoCompator());
-        try {
+       /* try {
             DBPhotoTable dbPhotoTable = new DBPhotoTable(SandBoxSql.getInstance());
             dbPhotoTable.insert(photoItemList);
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
 
         //回调
         if(mScanImageListener!=null){
