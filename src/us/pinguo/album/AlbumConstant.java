@@ -28,6 +28,8 @@ public class AlbumConstant {
 
     public static final String HEADER = "http://192.168.191.1:8080/";
 
+    public static String PHOTO_HEADER = "http://7xiyob.com1.z0.glb.clouddn.com/";
+
     // 接口超时值与重试次数
     public static final int DEFAULT_TIMEOUT_MS = 15000;
     public static final int DEFAULT_MAX_RETRIES = 0;

@@ -98,6 +98,36 @@ public class DBPhotoTable {
         return items;
     }
 
+    /**
+     * 查询没有上传的照片
+     *
+     * @return
+     */
+    public synchronized List<PhotoItem> queryNotUploadPhoto() {
+        int len = getPhotoCount();
+        List<PhotoItem> items = new ArrayList<PhotoItem>(len);
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try {
+            db = mSqlOpenHelper.getWriteSQLDB();
+            if (db == null) {
+                throw new IllegalStateException("Couldn't open database of " + AlbumConstant.SAND_B0X_DB_PATH);
+            }
+            cursor = db.rawQuery("SELECT * FROM photo where isUpload=?", new String[]{"0"});
+            while (cursor.moveToNext()) {
+                PhotoItem item = cursorToPhotoItem(cursor);
+                items.add(item);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return items;
+    }
+
     private ContentValues getContentValues(PhotoItem item) {
         ContentValues values = new ContentValues();
         values.put("path", item.photoUri);

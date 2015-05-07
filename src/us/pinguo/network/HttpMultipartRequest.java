@@ -5,6 +5,8 @@ import org.apache.http.entity.mime.MultipartEntity;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by yinyu on 15-2-11
@@ -53,5 +55,14 @@ public abstract class HttpMultipartRequest<T> extends HttpJsonRequest<T> {
             mMultipartEntity = getMultipartEntity();
         }
         return mMultipartEntity;
+    }
+
+    @Override
+    public Map<String, String> getHeaders() throws AuthFailureError {
+        HashMap<String, String> headers = new HashMap<String, String>();
+        // headers.put("Content-Type", "multipart/form-data; charset=utf-8");
+        headers.put("User-agent", "My useragent");
+        headers.put("WWW-Authenticate", "None");
+        return headers;
     }
 }
