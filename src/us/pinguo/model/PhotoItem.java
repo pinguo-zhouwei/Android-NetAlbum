@@ -4,7 +4,9 @@ package us.pinguo.model;
  * Created by Mr 周先森 on 2015/4/6.
  */
 public class PhotoItem {
-    public String photoUri;//照片的地址
+    public int id;
+    public String photoId;
+    public String url;//照片的地址
 
     public String time;//入库的时间
     /**
@@ -16,7 +18,7 @@ public class PhotoItem {
 
     }
     public PhotoItem(String photoUri, String time) {
-        this.photoUri = photoUri;
+        this.url = photoUri;
         this.time = time;
     }
 }

@@ -54,19 +54,6 @@ public class ApiLogin extends ApiAsyncTaskBase<BaseResponse<User>> {
             }
         });
     }
-}/* @Override
-    protected MultipartEntity getMultipartEntity() throws Exception {
-        MultipartEntity entity = new MultipartEntity();
-        Map<String,String> params = new HashMap<String, String>();
-
-        params.put("userName",mUserName);
-        params.put("password",mPassword);
-        params.put("createTime",mCreateTime);
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            entity.addPart(entry.getKey(), StringBody.create(entry.getValue(), "text/plain", Charset.defaultCharset()));
-        }
-
-        return entity;
-    }*/
+}
 
 

@@ -2,6 +2,8 @@ package us.pinguo.model;
 
 import android.content.Context;
 import android.text.TextUtils;
+import us.pinguo.album.MyAlbum;
+import us.pinguo.api.ApiAddPhoto;
 import us.pinguo.api.ApiLogin;
 import us.pinguo.api.ApiRegister;
 import us.pinguo.async.AsyncFutureAdapter;
@@ -51,4 +53,18 @@ public class AlbumManager {
     //获取照片
 
     //上传照片
+    public AsyncFuture<ApiAddPhoto.PhotoRes> uploadPhoto(final PhotoItem item) {
+        String userId = MyAlbum.getSharedPreferences().getString("userId", "");
+        if (TextUtils.isEmpty(userId)) {
+            return null;
+        }
+        ApiAddPhoto apiAddPhoto = new ApiAddPhoto(item, userId, mContext);
+        return new AsyncFutureAdapter<ApiAddPhoto.PhotoRes, BaseResponse<ApiAddPhoto.PhotoRes>>(apiAddPhoto) {
+
+            @Override
+            public ApiAddPhoto.PhotoRes adapt(BaseResponse<ApiAddPhoto.PhotoRes> photoRes) throws Exception {
+                return photoRes.data;
+            }
+        };
+    }
 }

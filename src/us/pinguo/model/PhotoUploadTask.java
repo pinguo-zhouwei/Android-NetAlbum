@@ -9,9 +9,11 @@ import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.HttpStack;
 import com.qiniu.Conf;
 import us.pinguo.album.AlbumConstant;
+import us.pinguo.api.ApiAddPhoto;
 import us.pinguo.api.ApiUploadPhoto;
 import us.pinguo.db.DBPhotoTable;
 import us.pinguo.db.SandBoxSql;
+import us.pinguo.network.AsyncResult;
 import us.pinguo.network.HurlStreamStack;
 
 import java.util.List;
@@ -44,16 +46,37 @@ public class PhotoUploadTask implements Runnable {
                 return;
             }
             for (int i = 0; i < photoItemList.size(); i++) {
-                PhotoItem item = photoItemList.get(i);
-                String url = item.photoUri;
+                final PhotoItem item = photoItemList.get(i);
+                String url = item.url;
                 String upToken = Conf.getToken();
                 ApiUploadPhoto.Data data = upload(url, upToken);
                 if (data != null) {
                     Log.i(TAG, "eTag：" + data.key);
                     String photoUrl = AlbumConstant.PHOTO_HEADER + data.key;
-                    item.photoUri = photoUrl;
+                    item.url = photoUrl;
                     //上传照片
+                    AlbumManager manager = new AlbumManager(mContext);
+                    manager.uploadPhoto(item).get(new AsyncResult<ApiAddPhoto.PhotoRes>() {
+                        @Override
+                        public void onSuccess(ApiAddPhoto.PhotoRes res) {
+                            Log.i(TAG, "上传成功。");
+                            item.time = res.time;
+                            item.url = res.url;
+                            item.isUpload = 1;
+                            item.photoId = res.photoId;
+                            try {
+                                DBPhotoTable table = new DBPhotoTable(SandBoxSql.getInstance());
+                                table.updateById(item);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
 
+                        @Override
+                        public void onError(Exception e) {
+                            Log.e(TAG, "上传失败。");
+                        }
+                    });
                 }
             }
         } catch (Exception e) {

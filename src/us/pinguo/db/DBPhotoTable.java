@@ -40,6 +40,22 @@ public class DBPhotoTable {
         return -1;
     }
 
+    public long updateById(PhotoItem item) {
+        SQLiteDatabase db = null;
+        try {
+            db = mSqlOpenHelper.getWriteSQLDB();
+            if (db == null) {
+                throw new IllegalStateException("Couldn't open database of " + AlbumConstant.SAND_B0X_DB_PATH);
+            }
+
+            ContentValues values = getContentValues(item);
+            return db.update(TABLE_PHOTO, values, "id = ?", new String[]{String.valueOf(item.id)});
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
     public void insert(List<PhotoItem> items) {
         for (PhotoItem item : items) {
             insert(item);
@@ -130,10 +146,11 @@ public class DBPhotoTable {
 
     private ContentValues getContentValues(PhotoItem item) {
         ContentValues values = new ContentValues();
-        values.put("path", item.photoUri);
+        values.put("path", item.url);
         values.put("time", item.time);
         values.put("headerId", item.headerId);
         values.put("isUpload", item.isUpload);
+        values.put("photoId", item.photoId);
         return values;
     }
 
@@ -141,7 +158,9 @@ public class DBPhotoTable {
         PhotoItem item = new PhotoItem();
         item.time = cursor.getString(cursor.getColumnIndex("time"));
         item.headerId = cursor.getInt(cursor.getColumnIndex("headerId"));
-        item.photoUri = cursor.getString(cursor.getColumnIndex("path"));
+        item.url = cursor.getString(cursor.getColumnIndex("path"));
+        item.id = cursor.getInt(cursor.getColumnIndex("id"));
+        item.photoId = cursor.getString(cursor.getColumnIndex("photoId"));
         return item;
     }
 

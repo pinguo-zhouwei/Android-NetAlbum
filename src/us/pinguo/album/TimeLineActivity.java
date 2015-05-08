@@ -132,7 +132,7 @@ public class TimeLineActivity extends Activity implements View.OnClickListener, 
                 mTimeLineAdapter.notifyDataSetChanged();
                 //展示banner
                 PhotoItem item = photoItemList.get(0);
-                ImageLoader.getInstance().displayImage("file://" + item.photoUri, mTimeLineTopBg);
+                ImageLoader.getInstance().displayImage("file://" + item.url, mTimeLineTopBg);
             }
         });
 

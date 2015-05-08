@@ -37,6 +37,7 @@ public class PhotoDetailActivity extends Activity implements SharePicViewDialog.
 
     private PhotoItem mCurrentPhotoItem;
     private int mCurrentIndex = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,12 +46,12 @@ public class PhotoDetailActivity extends Activity implements SharePicViewDialog.
         initView();
     }
 
-    public void initView(){
+    public void initView() {
         TextView tvTitile = (TextView) findViewById(R.id.title_text_title);
         tvTitile.setText(R.string.big_pic);
         mViewPager = (ViewPager) findViewById(R.id.photo_detail_viewPager);
         //设置ViewPager的切换动画
-        mViewPager.setPageTransformer(true,new ZoomOutPageTransformer());
+        mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         mAdapter = new PhotoPagerAdapter();
         mViewPager.setAdapter(mAdapter);
         mViewPager.setCurrentItem(mCurrentIndex);
@@ -61,36 +62,36 @@ public class PhotoDetailActivity extends Activity implements SharePicViewDialog.
         findViewById(R.id.title_back_btn).setOnClickListener(this);
     }
 
-    public void initData(){
-        Bundle bundle  = getIntent().getExtras();
-        if(bundle!=null){
+    public void initData() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
             mCurrentIndex = bundle.getInt("index");
         }
         //  PhotoInfoCache photoInfoCache = new PhotoInfoCache();
         mPhotoItemList = PhotoInfoCache.getLocalPhoto();
 
         mCurrentPhotoItem = mPhotoItemList.get(mCurrentIndex);
-        Log.i("zhouwei","PhotoDetailActivity "+mPhotoItemList.size());
+        Log.i("zhouwei", "PhotoDetailActivity " + mPhotoItemList.size());
     }
 
     @Override
     public void onShareItemClick(SharePicViewDialog dialog, int position) {
         Uri uri = null;
-        if(mCurrentPhotoItem!=null){
-            uri = Uri.fromFile(new File(mCurrentPhotoItem.photoUri));
+        if (mCurrentPhotoItem != null) {
+            uri = Uri.fromFile(new File(mCurrentPhotoItem.url));
         }
-        if(uri == null){
+        if (uri == null) {
             return;
         }
         boolean isShareWebExist;
-        switch (position){
+        switch (position) {
             case SharePicViewDialog.POSITION_WEIXIN:
-              isShareWebExist = mSharePicViewDialog.checkSSOIsExist(this, SharePicViewDialog.ShareWebName.WEIXIN_FRIENDS);
-              if (isShareWebExist) {
-                  mSharePicViewDialog.shareBabyPicToWebSite(this, uri,
-                          SharePicViewDialog.ShareWebName.WEIXIN_FRIENDS);
-              }
-              break;
+                isShareWebExist = mSharePicViewDialog.checkSSOIsExist(this, SharePicViewDialog.ShareWebName.WEIXIN_FRIENDS);
+                if (isShareWebExist) {
+                    mSharePicViewDialog.shareBabyPicToWebSite(this, uri,
+                            SharePicViewDialog.ShareWebName.WEIXIN_FRIENDS);
+                }
+                break;
             case SharePicViewDialog.POSITION_WEIXIN_FRIEND:
                 isShareWebExist = mSharePicViewDialog.checkSSOIsExist(this, SharePicViewDialog.ShareWebName.WEIXIN_FRIEDNS_LINES);
                 if (isShareWebExist) {
@@ -125,19 +126,19 @@ public class PhotoDetailActivity extends Activity implements SharePicViewDialog.
             case SharePicViewDialog.POSITION_MORE:
 
                 break;
-      }
+        }
     }
 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.photo_bottom_view:
                 showShareDialog();
                 break;
             case R.id.btn_edit:
                 Bundle bundle = new Bundle();
-                bundle.putString("path", mCurrentPhotoItem.photoUri);
+                bundle.putString("path", mCurrentPhotoItem.url);
                 Intent intent = new Intent(this, EditPicActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -178,33 +179,35 @@ public class PhotoDetailActivity extends Activity implements SharePicViewDialog.
         /**
          * ImageView 缓存
          */
-        Map<Integer,ImageView> viewCache ;
-        public  PhotoPagerAdapter(){
+        Map<Integer, ImageView> viewCache;
+
+        public PhotoPagerAdapter() {
             displayImageOptions = new DisplayImageOptions.Builder()
                     .cacheInMemory(true)                        // 设置下载的图片是否缓存在内存中
                     .cacheOnDisk(true)
                     .build();
             viewCache = new HashMap<Integer, ImageView>();
         }
+
         @Override
         public int getCount() {
-            return mPhotoItemList == null ? 0:mPhotoItemList.size();
+            return mPhotoItemList == null ? 0 : mPhotoItemList.size();
         }
 
         @Override
         public boolean isViewFromObject(View view, Object o) {
-            return view==o;
+            return view == o;
         }
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             PhotoItem photoItem = mPhotoItemList.get(position);
             // mCurrentPhotoItem = photoItem;
-            Log.i("zhouwei","url:"+photoItem.photoUri);
-            View view = LayoutInflater.from(container.getContext()).inflate(R.layout.photo_detail_item,null);
+            Log.i("zhouwei", "url:" + photoItem.url);
+            View view = LayoutInflater.from(container.getContext()).inflate(R.layout.photo_detail_item, null);
             ImageView imageView = (ImageView) view.findViewById(R.id.photo_detail_img);
-            ImageLoader.getInstance().displayImage("file://"+photoItem.photoUri,new ImageViewAware(imageView),displayImageOptions);
-            ((ViewPager)container).addView(view);
+            ImageLoader.getInstance().displayImage("file://" + photoItem.url, new ImageViewAware(imageView), displayImageOptions);
+            ((ViewPager) container).addView(view);
             /*ImageView imageView = null;
             if(viewCache.containsKey(position)){
                 imageView = viewCache.get(position);

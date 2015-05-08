@@ -74,7 +74,7 @@ public class TimeLineAdapter extends BaseAdapter implements StickyGridHeadersSim
         }
         viewHolder = (ViewHolder) convertView.getTag();
 
-        String url = "file://" + mPhotoItemList.get(position).photoUri;
+        String url = "file://" + mPhotoItemList.get(position).url;
         viewHolder.photo.setTag(url);
         ImageLoader.getInstance().displayImage(url, new ImageViewAware(viewHolder.photo), options, new ImageLoadingListener() {
             @Override

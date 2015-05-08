@@ -106,7 +106,7 @@ public class NetAlbumActivity extends AsyncTaskActivity implements View.OnClickL
 
     public PhotoItem generateItem(String url) {
         PhotoItem photoItem = new PhotoItem();
-        photoItem.photoUri = url;
+        photoItem.url = url;
         photoItem.time = String.valueOf(System.currentTimeMillis());
         photoItem.isUpload = 0;
         return photoItem;
@@ -145,7 +145,7 @@ public class NetAlbumActivity extends AsyncTaskActivity implements View.OnClickL
                 convertView.setTag(viewHolder);
             }
             viewHolder = (ViewHolder) convertView.getTag();
-            ImageLoader.getInstance().displayImage("file://" + item.photoUri, viewHolder.imageView);
+            ImageLoader.getInstance().displayImage("file://" + item.url, viewHolder.imageView);
             return convertView;
         }
 
