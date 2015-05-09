@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import us.pinguo.album.view.CommonAlertDialog;
+import us.pinguo.login.LoginActivity;
+import us.pinguo.model.UserInfoCache;
 
 /**
  * Created by Mr 周先森 on 2015/5/9.
@@ -43,10 +46,32 @@ public class SplashActivity extends Activity implements View.OnClickListener {
                 startActivity(new Intent(this, TimeLineActivity.class));
                 break;
             case R.id.btn_net_album:
+                UserInfoCache userInfoCache = new UserInfoCache();
+                if (userInfoCache.isLogin()) {
+                    Intent intent = new Intent(this, NetAlbumActivity.class);
+                    startActivity(intent);
+                } else {
+                    showDialog();
+                }
                 break;
         }
     }
 
+    private void showDialog() {
+        CommonAlertDialog alertDialog = new CommonAlertDialog(this, getString(R.string.login_tips));
+        alertDialog.setCancelable(true);
+        alertDialog.setCanceledOnTouchOutside(false);
+        CommonAlertDialog.PositiveOnClickLister positiveOnClickLister = new CommonAlertDialog.PositiveOnClickLister() {
+            @Override
+            public void onClick(CommonAlertDialog dialog) {
+                dialog.dismiss();
+                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        };
+        alertDialog.setPositiveOnClickLister(positiveOnClickLister);
+        alertDialog.show();
+    }
     class SplashPagerAdapter extends PagerAdapter {
         DisplayImageOptions displayImageOptions;
 

@@ -81,9 +81,9 @@ public class AlbumManager {
                         photoItems.add(item);
                     }
                 }
-
+                //更新
                 DBPhotoTable dbPhotoTable = new DBPhotoTable(SandBoxSql.getInstance());
-                dbPhotoTable.insert(photoItems);
+                dbPhotoTable.update(photoItems);
 
                 return photoItems;
             }
