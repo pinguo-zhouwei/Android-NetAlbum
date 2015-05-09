@@ -4,11 +4,17 @@ import android.content.Context;
 import android.text.TextUtils;
 import us.pinguo.album.MyAlbum;
 import us.pinguo.api.ApiAddPhoto;
+import us.pinguo.api.ApiGetPhoto;
 import us.pinguo.api.ApiLogin;
 import us.pinguo.api.ApiRegister;
 import us.pinguo.async.AsyncFutureAdapter;
+import us.pinguo.db.DBPhotoTable;
+import us.pinguo.db.SandBoxSql;
 import us.pinguo.network.AsyncFuture;
 import us.pinguo.network.BaseResponse;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Mr 周先森 on 2015/4/24.
@@ -51,7 +57,38 @@ public class AlbumManager {
         };
     }
     //获取照片
+    public AsyncFuture<List<PhotoItem>> sncPhoto() {
+        String userId = MyAlbum.getSharedPreferences().getString("userId", "");
+        if (TextUtils.isEmpty(userId)) {
+            return null;
+        }
+        ApiGetPhoto apiGetPhoto = new ApiGetPhoto(userId, mContext);
+        return new AsyncFutureAdapter<List<PhotoItem>, BaseResponse<List<ApiGetPhoto.PhotoRes>>>(apiGetPhoto) {
 
+            @Override
+            public List<PhotoItem> adapt(BaseResponse<List<ApiGetPhoto.PhotoRes>> photosBaseResponse) throws Exception {
+                //保存数据库
+                List<ApiGetPhoto.PhotoRes> photosList = photosBaseResponse.data;
+                List<PhotoItem> photoItems = new ArrayList<PhotoItem>();
+                if (photosList != null && photosList.size() > 0) {
+                    for (int i = 0; i < photosList.size(); i++) {
+                        PhotoItem item = new PhotoItem();
+                        ApiGetPhoto.PhotoRes photoRes = photosList.get(i);
+                        item.photoId = photoRes.photoId;
+                        item.isUpload = 1;
+                        item.url = photoRes.url;
+                        item.time = photoRes.time;
+                        photoItems.add(item);
+                    }
+                }
+
+                DBPhotoTable dbPhotoTable = new DBPhotoTable(SandBoxSql.getInstance());
+                dbPhotoTable.insert(photoItems);
+
+                return photoItems;
+            }
+        };
+    }
     //上传照片
     public AsyncFuture<ApiAddPhoto.PhotoRes> uploadPhoto(final PhotoItem item) {
         String userId = MyAlbum.getSharedPreferences().getString("userId", "");

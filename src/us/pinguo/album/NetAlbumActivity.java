@@ -12,12 +12,15 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import us.pinguo.album.utils.BitmapCache;
 import us.pinguo.db.DBPhotoTable;
 import us.pinguo.db.SandBoxSql;
+import us.pinguo.model.AlbumManager;
 import us.pinguo.model.PhotoItem;
 import us.pinguo.model.PhotoUploadTask;
+import us.pinguo.network.AsyncResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +59,9 @@ public class NetAlbumActivity extends AsyncTaskActivity implements View.OnClickL
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        //同步照片
+        sncPhotos();
     }
 
     @Override
@@ -67,6 +73,26 @@ public class NetAlbumActivity extends AsyncTaskActivity implements View.OnClickL
         }
     }
 
+    /**
+     * 同步服务器照片
+     */
+    public void sncPhotos() {
+        AlbumManager manager = new AlbumManager(this);
+        manager.sncPhoto().get(new AsyncResult<List<PhotoItem>>() {
+            @Override
+            public void onSuccess(List<PhotoItem> items) {
+                Toast.makeText(NetAlbumActivity.this, "照片同步成功", Toast.LENGTH_SHORT).show();
+                photoItemList = items;
+                mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(Exception e) {
+                e.printStackTrace();
+                Toast.makeText(NetAlbumActivity.this, "照片同步失败", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
     public void lauchAlbum() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
@@ -145,7 +171,13 @@ public class NetAlbumActivity extends AsyncTaskActivity implements View.OnClickL
                 convertView.setTag(viewHolder);
             }
             viewHolder = (ViewHolder) convertView.getTag();
-            ImageLoader.getInstance().displayImage("file://" + item.url, viewHolder.imageView);
+            String url = "";
+            if (item.url.startsWith("http://")) {//网络图片
+                url = item.url;
+            } else {//本地图片
+                url = "file://" + item.url;
+            }
+            ImageLoader.getInstance().displayImage(url, viewHolder.imageView);
             return convertView;
         }
 

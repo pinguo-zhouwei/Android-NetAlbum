@@ -21,6 +21,33 @@ public class DBPhotoTable {
     }
 
     /**
+     * 判断本条记录在表中是否已经存在
+     * @param item
+     * @return true 存在，false 不存在
+     */
+    public boolean isInTable(PhotoItem item) {
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try {
+            db = mSqlOpenHelper.getWriteSQLDB();
+            if (db == null) {
+                throw new IllegalStateException("Couldn't open database of " + AlbumConstant.SAND_B0X_DB_PATH);
+            }
+            cursor = db.rawQuery("SELECT * FROM photo where photoId=?", new String[]{String.valueOf(item.photoId)});
+            if (cursor.moveToFirst()) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return false;
+    }
+
+    /**
      * @param item
      * @return
      */
@@ -54,6 +81,43 @@ public class DBPhotoTable {
             e.printStackTrace();
         }
         return -1;
+    }
+
+    /**
+     * 根据照片id 更新
+     *
+     * @param item
+     */
+    public long updateByPhotoId(PhotoItem item) {
+        SQLiteDatabase db = null;
+        try {
+            db = mSqlOpenHelper.getWriteSQLDB();
+            if (db == null) {
+                throw new IllegalStateException("Couldn't open database of " + AlbumConstant.SAND_B0X_DB_PATH);
+            }
+
+            ContentValues values = getContentValues(item);
+            return db.update(TABLE_PHOTO, values, "photoId = ?", new String[]{String.valueOf(item.photoId)});
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    /**
+     * 更新一组照片
+     *
+     * @param photoItems
+     */
+    public void update(List<PhotoItem> photoItems) {
+        for (int i = 0; i < photoItems.size(); i++) {
+            PhotoItem item = photoItems.get(i);
+            if (isInTable(item)) {//存在，更新
+                insert(item);
+            } else {//不存在，插入
+                updateByPhotoId(item);
+            }
+        }
     }
 
     public void insert(List<PhotoItem> items) {
