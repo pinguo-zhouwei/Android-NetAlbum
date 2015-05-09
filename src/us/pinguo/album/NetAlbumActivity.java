@@ -9,12 +9,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.*;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import us.pinguo.album.utils.BitmapCache;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import us.pinguo.db.DBPhotoTable;
 import us.pinguo.db.SandBoxSql;
 import us.pinguo.model.AlbumManager;
@@ -32,6 +30,7 @@ public class NetAlbumActivity extends AsyncTaskActivity implements View.OnClickL
     private List<PhotoItem> photoItemList = new ArrayList<PhotoItem>();
     private GridView mGridView;
     private GridViewAdapter mAdapter;
+    private TextView mHeaderName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +42,9 @@ public class NetAlbumActivity extends AsyncTaskActivity implements View.OnClickL
     }
 
     private void initView() {
+        String userName = MyAlbum.getSharedPreferences().getString("userName", "");
+        mHeaderName = (TextView) findViewById(R.id.album_user_name);
+        mHeaderName.setText(userName);
         findViewById(R.id.btn_photo_import).setOnClickListener(this);
         mGridView = (GridView) findViewById(R.id.net_album_grid);
         mAdapter = new GridViewAdapter();
@@ -139,10 +141,19 @@ public class NetAlbumActivity extends AsyncTaskActivity implements View.OnClickL
     }
 
     class GridViewAdapter extends BaseAdapter {
-        BitmapCache cache;
+
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                .cacheInMemory(true)                        // 设置下载的图片是否缓存在内存中
+                .cacheOnDisk(true)
+                .imageScaleType(ImageScaleType.EXACTLY)
+                .considerExifParams(true)
+                .resetViewBeforeLoading(true)
+                .showImageForEmptyUri(R.drawable.img_defaut)
+                .showImageOnLoading(R.drawable.img_defaut)
+                .build();
 
         public GridViewAdapter() {
-            cache = BitmapCache.getCacheInstance();
+
         }
 
         @Override
@@ -177,7 +188,7 @@ public class NetAlbumActivity extends AsyncTaskActivity implements View.OnClickL
             } else {//本地图片
                 url = "file://" + item.url;
             }
-            ImageLoader.getInstance().displayImage(url, viewHolder.imageView);
+            ImageLoader.getInstance().displayImage(url, viewHolder.imageView, options);
             return convertView;
         }
 

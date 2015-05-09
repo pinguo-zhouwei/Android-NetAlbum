@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+    <android.support.v4.view.ViewPager
+            android:id="@+id/splash_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black_light"
+            >
+    </android.support.v4.view.ViewPager>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="200dp"
+                  android:orientation="horizontal"
+                  android:layout_alignParentBottom="true"
+            >
+        <LinearLayout
+                android:id="@+id/btn_local_album"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                >
+            <ImageView android:layout_width="40dp"
+
+                       android:layout_height="40dp"
+                       android:src="@drawable/icon_local_album"
+                    />
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textSize="18sp"
+                      android:layout_marginTop="5dp"
+                      android:textColor="@android:color/white"
+                      android:text="@string/local_album"
+                    />
+        </LinearLayout>
+        <LinearLayout
+                android:id="@+id/btn_net_album"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+            <ImageView android:layout_width="40dp"
+                       android:layout_height="40dp"
+                       android:src="@drawable/icon_net_album"
+                    />
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textSize="18sp"
+                      android:layout_marginTop="5dp"
+                      android:textColor="@android:color/white"
+                      android:text="@string/net_album"
+                    />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

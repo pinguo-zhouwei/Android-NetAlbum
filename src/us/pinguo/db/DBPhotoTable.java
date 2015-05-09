@@ -113,9 +113,9 @@ public class DBPhotoTable {
         for (int i = 0; i < photoItems.size(); i++) {
             PhotoItem item = photoItems.get(i);
             if (isInTable(item)) {//存在，更新
-                insert(item);
-            } else {//不存在，插入
                 updateByPhotoId(item);
+            } else {//不存在，插入
+                insert(item);
             }
         }
     }

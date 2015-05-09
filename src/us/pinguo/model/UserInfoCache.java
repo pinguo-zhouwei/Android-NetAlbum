@@ -24,6 +24,7 @@ public class UserInfoCache {
             //保存登录态
             SharedPreferences.Editor editor = MyAlbum.getSharedPreferences().edit();
             editor.putString("userId", user.userId);
+            editor.putString("userName", user.userName);
             editor.commit();
         } catch (Exception e) {
             e.printStackTrace();

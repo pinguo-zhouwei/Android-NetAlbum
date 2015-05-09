@@ -18,7 +18,7 @@
             android:name="us.pinguo.MyApplication"
             android:theme="@android:style/Theme.NoTitleBar">
         <activity
-                android:name=".TimeLineActivity"
+                android:name=".SplashActivity"
                 android:screenOrientation="portrait"
                 android:label="@string/app_name">
             <intent-filter>
@@ -54,6 +54,10 @@
                   android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
                 />
         <activity android:name=".NetAlbumActivity"
+                  android:screenOrientation="portrait"
+                  android:theme="@android:style/Theme.NoTitleBar"
+                />
+        <activity android:name=".TimeLineActivity"
                   android:screenOrientation="portrait"
                   android:theme="@android:style/Theme.NoTitleBar"
                 />
