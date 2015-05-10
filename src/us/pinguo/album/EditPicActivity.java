@@ -53,12 +53,15 @@ public class EditPicActivity extends Activity implements AdapterView.OnItemClick
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             mPath = bundle.getString("path");
+            if (!mPath.startsWith("http://")) {
+                mPath = "file://" + mPath;
+            }
         }
         if (TextUtils.isEmpty(mPath)) {
             return;
         }
         mImageView = (EffectImageView) findViewById(R.id.edit_source_img);
-        ImageLoader.getInstance().loadImage("file://" + mPath, new ImageLoadingListener() {
+        ImageLoader.getInstance().loadImage(mPath, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {
 

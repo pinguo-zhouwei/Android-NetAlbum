@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Created by Mr 周先森 on 2015/4/29.
  */
-public class NetAlbumActivity extends AsyncTaskActivity implements View.OnClickListener {
+public class NetAlbumActivity extends AsyncTaskActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
     private List<PhotoItem> photoItemList = new ArrayList<PhotoItem>();
     private GridView mGridView;
     private GridViewAdapter mAdapter;
@@ -49,6 +49,7 @@ public class NetAlbumActivity extends AsyncTaskActivity implements View.OnClickL
         mGridView = (GridView) findViewById(R.id.net_album_grid);
         mAdapter = new GridViewAdapter();
         mGridView.setAdapter(mAdapter);
+        mGridView.setOnItemClickListener(this);
     }
 
     @Override
@@ -138,6 +139,16 @@ public class NetAlbumActivity extends AsyncTaskActivity implements View.OnClickL
         photoItem.time = String.valueOf(System.currentTimeMillis());
         photoItem.isUpload = 0;
         return photoItem;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("index", position);
+        bundle.putInt("flag", PhotoDetailActivity.FLAG_NET);
+        Intent intent = new Intent(this, PhotoDetailActivity.class);
+        intent.putExtras(bundle);
+        this.startActivity(intent);
     }
 
     class GridViewAdapter extends BaseAdapter {

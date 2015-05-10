@@ -47,7 +47,7 @@
             android:numColumns="3"
             android:horizontalSpacing="5dp"
             android:verticalSpacing="5dp"
-            android:background="@android:color/transparent"
+            android:listSelector="@android:color/transparent"
             >
     </GridView>
 </LinearLayout>

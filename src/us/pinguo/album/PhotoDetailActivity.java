@@ -21,15 +21,15 @@ import us.pinguo.model.PhotoInfoCache;
 import us.pinguo.model.PhotoItem;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Mr 周先森 on 2015/4/15.
  */
 public class PhotoDetailActivity extends Activity implements SharePicViewDialog.ShareClickListener, View.OnClickListener, ViewPager.OnPageChangeListener {
     private static final String TAG = PhotoDetailActivity.class.getSimpleName();
+    public static final int FLAG_NET = 0;
+    public static final int FLAG_LOCAL = 1;
     private ViewPager mViewPager;
     private List<PhotoItem> mPhotoItemList;
     private PhotoPagerAdapter mAdapter;
@@ -37,6 +37,7 @@ public class PhotoDetailActivity extends Activity implements SharePicViewDialog.
 
     private PhotoItem mCurrentPhotoItem;
     private int mCurrentIndex = 0;
+    private int mFlag = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,10 +67,15 @@ public class PhotoDetailActivity extends Activity implements SharePicViewDialog.
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             mCurrentIndex = bundle.getInt("index");
+            mFlag = bundle.getInt("flag");
         }
-        //  PhotoInfoCache photoInfoCache = new PhotoInfoCache();
-        mPhotoItemList = PhotoInfoCache.getLocalPhoto();
 
+        if (mFlag == FLAG_LOCAL) {
+            mPhotoItemList = PhotoInfoCache.getLocalPhoto();
+        } else if (mFlag == FLAG_NET) {
+            PhotoInfoCache photoInfoCache = new PhotoInfoCache();
+            mPhotoItemList = photoInfoCache.getPhoto();
+        }
         mCurrentPhotoItem = mPhotoItemList.get(mCurrentIndex);
         Log.i("zhouwei", "PhotoDetailActivity " + mPhotoItemList.size());
     }
@@ -78,7 +84,13 @@ public class PhotoDetailActivity extends Activity implements SharePicViewDialog.
     public void onShareItemClick(SharePicViewDialog dialog, int position) {
         Uri uri = null;
         if (mCurrentPhotoItem != null) {
-            uri = Uri.fromFile(new File(mCurrentPhotoItem.url));
+            if (mCurrentPhotoItem.url.startsWith("http://")) {
+                File file = ImageLoader.getInstance().getDiskCache().get(mCurrentPhotoItem.url);
+                uri = Uri.fromFile(file);
+            } else {
+                uri = Uri.fromFile(new File(mCurrentPhotoItem.url));
+            }
+
         }
         if (uri == null) {
             return;
@@ -176,17 +188,12 @@ public class PhotoDetailActivity extends Activity implements SharePicViewDialog.
 
     class PhotoPagerAdapter extends PagerAdapter {
         DisplayImageOptions displayImageOptions;
-        /**
-         * ImageView 缓存
-         */
-        Map<Integer, ImageView> viewCache;
 
         public PhotoPagerAdapter() {
             displayImageOptions = new DisplayImageOptions.Builder()
                     .cacheInMemory(true)                        // 设置下载的图片是否缓存在内存中
                     .cacheOnDisk(true)
                     .build();
-            viewCache = new HashMap<Integer, ImageView>();
         }
 
         @Override
@@ -206,21 +213,14 @@ public class PhotoDetailActivity extends Activity implements SharePicViewDialog.
             Log.i("zhouwei", "url:" + photoItem.url);
             View view = LayoutInflater.from(container.getContext()).inflate(R.layout.photo_detail_item, null);
             ImageView imageView = (ImageView) view.findViewById(R.id.photo_detail_img);
-            ImageLoader.getInstance().displayImage("file://" + photoItem.url, new ImageViewAware(imageView), displayImageOptions);
-            ((ViewPager) container).addView(view);
-            /*ImageView imageView = null;
-            if(viewCache.containsKey(position)){
-                imageView = viewCache.get(position);
-                //    imageView.setImageBitmap(cache.getBitmap(files[position].toString()));
+            String url = "";
+            if (photoItem.url.startsWith("http://")) {
+                url = photoItem.url;
             }else{
-                imageView = new ImageView(PhotoDetailActivity.this);
-                imageView.setMaxWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
-                imageView.setMaxHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-                ImageLoader.getInstance().displayImage(photoItem.photoUri,imageView,displayImageOptions);
-                viewCache.put(position,imageView);
-                ((ViewPager)container).addView(imageView);
-            }*/
-
+                url = "file://" + photoItem.url;
+            }
+            ImageLoader.getInstance().displayImage(url, new ImageViewAware(imageView), displayImageOptions);
+            ((ViewPager) container).addView(view);
             return view;
         }
 

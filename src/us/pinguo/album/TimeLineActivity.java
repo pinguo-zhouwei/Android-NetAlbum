@@ -54,34 +54,10 @@ public class TimeLineActivity extends Activity implements View.OnClickListener, 
     @Override
     protected void onResume() {
         super.onResume();
-       /* List<PhotoItem> photoItemList = null;
-        try {
-            DBPhotoTable dbPhotoTable = new DBPhotoTable(SandBoxSql.getInstance());
-            photoItemList = dbPhotoTable.queryPhoto();
-            Log.i("TimeLineActivity", "TimeLineActivity size:" + photoItemList.size());
-            if (photoItemList != null && photoItemList.size() > 0) {
-                Collections.sort(photoItemList, new PhotoCompator());
 
-                PhotoItem item = photoItemList.get(0);
-                ImageLoader.getInstance().displayImage("file://" + item.photoUri, mTimeLineTopBg);
-
-                mTimeLineAdapter.setPhotoItemList(photoItemList);
-                //
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mTextView.setVisibility(View.GONE);
-                        mTimeLineAdapter.notifyDataSetChanged();
-                    }
-                }, 1000);
-            }else{*/
         ImageScanner imageScanner = new ImageScanner(this);
         imageScanner.setmScanImageListener(this);
         new Thread(imageScanner).start();
-        //  }
-       /* } catch (Exception e) {
-            throw new RuntimeException(e);
-        }*/
     }
 
     @Override
@@ -142,6 +118,7 @@ public class TimeLineActivity extends Activity implements View.OnClickListener, 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Bundle bundle = new Bundle();
         bundle.putInt("index", position);
+        bundle.putInt("flag", PhotoDetailActivity.FLAG_LOCAL);
         Intent intent = new Intent(this, PhotoDetailActivity.class);
         intent.putExtras(bundle);
         this.startActivity(intent);
