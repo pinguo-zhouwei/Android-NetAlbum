@@ -18,11 +18,11 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import us.pinguo.album.effect.*;
 import us.pinguo.album.utils.BitmapUtils;
+import us.pinguo.album.utils.FileUtils;
 import us.pinguo.album.view.EffectImageView;
 import us.pinguo.album.view.HorizontalListView;
 import us.pinguo.model.Storage;
 
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -138,7 +138,7 @@ public class EditPicActivity extends Activity implements AdapterView.OnItemClick
                 if (bitmap == null) {
                     return;
                 }
-                String path = generatePicPath();
+                String path = FileUtils.generatePicPath();
                 if (path == null) {
                     return;
                 }
@@ -157,16 +157,6 @@ public class EditPicActivity extends Activity implements AdapterView.OnItemClick
         }
     }
 
-    private String generatePicPath() {
-        File file = new File(AlbumConstant.EFFECT_PIC_PATH);
-        if (!file.exists()) {
-            if (!file.mkdirs()) {
-                Log.i(TAG, "create file failed");
-                return null;
-            }
-        }
-        return file.getAbsolutePath() + "/" + "effect_img_" + System.currentTimeMillis() + ".jpg";
-    }
 
     class EffectAdapter extends BaseAdapter {
         private int currentPos = -1;

@@ -38,8 +38,7 @@ public class NetAlbumActivity extends AsyncTaskActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.net_album_layout);
         initView();
-        PhotoUploadTask task = new PhotoUploadTask(this);
-        new Thread(task).start();
+        flush();
     }
 
     private void initView() {
@@ -67,6 +66,11 @@ public class NetAlbumActivity extends AsyncTaskActivity implements View.OnClickL
 
         //同步照片
         sncPhotos();
+    }
+
+    public void flush() {
+        PhotoUploadTask task = new PhotoUploadTask(this);
+        new Thread(task).start();
     }
 
     @Override
@@ -143,6 +147,8 @@ public class NetAlbumActivity extends AsyncTaskActivity implements View.OnClickL
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+                flush();
             }
 
         }

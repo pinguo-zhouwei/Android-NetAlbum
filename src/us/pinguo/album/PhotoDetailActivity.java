@@ -1,9 +1,11 @@
 package us.pinguo.album;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -12,24 +14,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
+import us.pinguo.album.utils.BitmapUtils;
+import us.pinguo.album.utils.FileUtils;
 import us.pinguo.album.utils.ZoomOutPageTransformer;
 import us.pinguo.album.view.SharePicViewDialog;
 import us.pinguo.model.PhotoInfoCache;
 import us.pinguo.model.PhotoItem;
+import us.pinguo.model.Storage;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Created by Mr 周先森 on 2015/4/15.
  */
-public class PhotoDetailActivity extends Activity implements SharePicViewDialog.ShareClickListener, View.OnClickListener, ViewPager.OnPageChangeListener {
+public class PhotoDetailActivity extends AsyncTaskActivity implements SharePicViewDialog.ShareClickListener, View.OnClickListener, ViewPager.OnPageChangeListener {
     private static final String TAG = PhotoDetailActivity.class.getSimpleName();
     public static final int FLAG_NET = 0;
     public static final int FLAG_LOCAL = 1;
+    public static final int SAVE_PIC = 2;
     private ViewPager mViewPager;
     private List<PhotoItem> mPhotoItemList;
     private PhotoPagerAdapter mAdapter;
@@ -38,6 +46,35 @@ public class PhotoDetailActivity extends Activity implements SharePicViewDialog.
     private PhotoItem mCurrentPhotoItem;
     private int mCurrentIndex = 0;
     private int mFlag = 1;
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(final Message msg) {
+            if (msg.what == SAVE_PIC) {
+                final Bitmap bitmap = (Bitmap) msg.obj;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        hideProgressDialog();
+
+                        String path = FileUtils.generatePicPath();
+                        if (path == null) {
+                            return;
+                        }
+                        try {
+                            BitmapUtils.saveBitmap(path, bitmap, 100);
+                            Toast.makeText(PhotoDetailActivity.this, R.string.save_pic_path, Toast.LENGTH_SHORT).show();
+                            Storage.addStorage(PhotoDetailActivity.this, path);//插入媒体数据库
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +170,22 @@ public class PhotoDetailActivity extends Activity implements SharePicViewDialog.
                 }
                 break;
             case SharePicViewDialog.POSITION_SAVE:
+                if (!mCurrentPhotoItem.url.startsWith("http://")) {
+                    Toast.makeText(this, "本地已经有该照片了哟~", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                showProgressDialog();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Bitmap bitmap = ImageLoader.getInstance().loadImageSync(mCurrentPhotoItem.url);
+
+                        Message msg = new Message();
+                        msg.what = SAVE_PIC;
+                        msg.obj = bitmap;
+                        mHandler.handleMessage(msg);
+                    }
+                }).start();
 
                 break;
             case SharePicViewDialog.POSITION_MORE:
