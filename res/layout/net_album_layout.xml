@@ -17,7 +17,17 @@
                 android:layout_height="wrap_content"
                 android:text="导入照片"
                 android:padding="10dp"
+                android:textColor="@android:color/white"
                 android:layout_alignParentRight="true"
+                />
+        <TextView
+                android:id="@+id/btn_photo_loginout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="切换账号"
+                android:padding="10dp"
+                android:textColor="@android:color/white"
+                android:layout_alignParentLeft="true"
                 />
         <LinearLayout android:layout_width="match_parent"
                       android:layout_height="wrap_content"

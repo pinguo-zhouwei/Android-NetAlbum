@@ -1,6 +1,7 @@
 package us.pinguo.album;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -50,6 +51,7 @@ public class NetAlbumActivity extends AsyncTaskActivity implements View.OnClickL
         mAdapter = new GridViewAdapter();
         mGridView.setAdapter(mAdapter);
         mGridView.setOnItemClickListener(this);
+        findViewById(R.id.btn_photo_loginout).setOnClickListener(this);
     }
 
     @Override
@@ -73,7 +75,20 @@ public class NetAlbumActivity extends AsyncTaskActivity implements View.OnClickL
             case R.id.btn_photo_import:
                 lauchAlbum();
                 break;
+            case R.id.btn_photo_loginout:
+                loginOut();
+                Intent intent = new Intent(this, SplashActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                break;
         }
+    }
+
+    public void loginOut() {
+        SharedPreferences.Editor editor = MyAlbum.getSharedPreferences().edit();
+        editor.putString("userId", "");
+        editor.putString("userName", "");
+        editor.commit();
     }
 
     /**
