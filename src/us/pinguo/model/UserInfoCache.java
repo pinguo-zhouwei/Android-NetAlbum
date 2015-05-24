@@ -15,7 +15,7 @@ public class UserInfoCache {
      *
      * @param user
      */
-    public void saveUser(User user) {
+    public void saveUser(UserInfo user) {
         try {
             DBUserTable table = new DBUserTable(SandBoxSql.getInstance());
             if (!table.userHasInTable(user.userId)) {//如果表中没有该用户的数据，则插入
@@ -37,7 +37,7 @@ public class UserInfoCache {
      * @param userId
      * @return
      */
-    public User getUser(String userId) {
+    public UserInfo getUser(String userId) {
         try {
             DBUserTable table = new DBUserTable(SandBoxSql.getInstance());
             return table.findUserById(userId);

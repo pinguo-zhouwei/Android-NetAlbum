@@ -39,6 +39,8 @@ public class NetAlbumActivity extends AsyncTaskActivity implements View.OnClickL
         setContentView(R.layout.net_album_layout);
         initView();
         flush();
+        //同步照片
+        sncPhotos();
     }
 
     private void initView() {
@@ -64,8 +66,7 @@ public class NetAlbumActivity extends AsyncTaskActivity implements View.OnClickL
             e.printStackTrace();
         }
 
-        //同步照片
-        sncPhotos();
+
     }
 
     public void flush() {
@@ -104,8 +105,15 @@ public class NetAlbumActivity extends AsyncTaskActivity implements View.OnClickL
             @Override
             public void onSuccess(List<PhotoItem> items) {
                 Toast.makeText(NetAlbumActivity.this, "照片同步成功", Toast.LENGTH_SHORT).show();
-                photoItemList = items;
-                mAdapter.notifyDataSetChanged();
+                //  photoItemList = items;
+                //  mAdapter.notifyDataSetChanged();
+                try {
+                    DBPhotoTable dbPhotoTable = new DBPhotoTable(SandBoxSql.getInstance());
+                    photoItemList = dbPhotoTable.queryPhoto();
+                    mAdapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -115,6 +123,7 @@ public class NetAlbumActivity extends AsyncTaskActivity implements View.OnClickL
             }
         });
     }
+
     public void lauchAlbum() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");

@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Android-NetAlbum.iml" filepath="$PROJECT_DIR$/Android-NetAlbum.iml" />
+      <module fileurl="file://$PROJECT_DIR$/other/WeiboSDK/WeiboSDK.iml" filepath="$PROJECT_DIR$/other/WeiboSDK/WeiboSDK.iml" />
     </modules>
   </component>
 </project>

@@ -7,7 +7,7 @@ import com.android.volley.VolleyError;
 import us.pinguo.album.AlbumConstant;
 import us.pinguo.async.ApiAsyncTaskBase;
 import us.pinguo.async.HttpJsonRequest;
-import us.pinguo.model.User;
+import us.pinguo.model.UserInfo;
 import us.pinguo.network.AsyncResult;
 import us.pinguo.network.BaseResponse;
 
@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * Created by Mr 周先森 on 2015/4/23.
  */
-public class ApiLogin extends ApiAsyncTaskBase<BaseResponse<User>> {
+public class ApiLogin extends ApiAsyncTaskBase<BaseResponse<UserInfo>> {
     public static final String url = AlbumConstant.HEADER + "YouthDrinking/servlet/LoginServlet";
     private String mUserName;
     private String mPassword;
@@ -30,8 +30,8 @@ public class ApiLogin extends ApiAsyncTaskBase<BaseResponse<User>> {
 
 
     @Override
-    public void get(final AsyncResult<BaseResponse<User>> result) {
-        execute(new HttpJsonRequest<BaseResponse<User>>(Request.Method.POST, url, null) {
+    public void get(final AsyncResult<BaseResponse<UserInfo>> result) {
+        execute(new HttpJsonRequest<BaseResponse<UserInfo>>(Request.Method.POST, url, null) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
@@ -42,7 +42,7 @@ public class ApiLogin extends ApiAsyncTaskBase<BaseResponse<User>> {
             }
 
             @Override
-            protected void onResponse(BaseResponse<User> userBaseResponse) {
+            protected void onResponse(BaseResponse<UserInfo> userBaseResponse) {
                 if (userBaseResponse.status == 200) {
                     postResponse(result, userBaseResponse);
                 }

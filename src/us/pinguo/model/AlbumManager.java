@@ -28,12 +28,12 @@ public class AlbumManager {
     }
 
     //登录
-    public AsyncFuture<User> userLogin(String userName, String pass) {
+    public AsyncFuture<UserInfo> userLogin(String userName, String pass) {
         ApiLogin apiLogin = new ApiLogin(userName, pass, mContext);
-        return new AsyncFutureAdapter<User, BaseResponse<User>>(apiLogin) {
+        return new AsyncFutureAdapter<UserInfo, BaseResponse<UserInfo>>(apiLogin) {
 
             @Override
-            public User adapt(BaseResponse<User> userBaseResponse) throws Exception {
+            public UserInfo adapt(BaseResponse<UserInfo> userBaseResponse) throws Exception {
                 //数据库操作
                 UserInfoCache userInfoCache = new UserInfoCache();
                 userInfoCache.saveUser(userBaseResponse.data);

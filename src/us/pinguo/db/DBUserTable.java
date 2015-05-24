@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import us.pinguo.album.AlbumConstant;
-import us.pinguo.model.User;
+import us.pinguo.model.UserInfo;
 
 /**
  * Created by Mr 周先森 on 2015/4/28.
@@ -43,7 +43,7 @@ public class DBUserTable {
      * @param user
      * @return
      */
-    public synchronized long insert(User user) {
+    public synchronized long insert(UserInfo user) {
         SQLiteDatabase db = null;
         try {
             db = mSqlOpenHelper.getWriteSQLDB();
@@ -59,9 +59,9 @@ public class DBUserTable {
         return -1;
     }
 
-    public User findUserById(String userId) {
+    public UserInfo findUserById(String userId) {
         SQLiteDatabase db = null;
-        User user = null;
+        UserInfo user = null;
         Cursor cursor = null;
         try {
             db = mSqlOpenHelper.getWriteSQLDB();
@@ -82,7 +82,7 @@ public class DBUserTable {
         return user;
     }
 
-    public ContentValues getContentValues(User user) {
+    public ContentValues getContentValues(UserInfo user) {
         ContentValues values = new ContentValues();
         values.put("userId", user.userId);
         values.put("userName", user.userName);
@@ -91,8 +91,8 @@ public class DBUserTable {
         return values;
     }
 
-    public User cursorToUser(Cursor cursor) {
-        User user = new User();
+    public UserInfo cursorToUser(Cursor cursor) {
+        UserInfo user = new UserInfo();
         user.userId = cursor.getString(cursor.getColumnIndex("userId"));
         user.userName = cursor.getString(cursor.getColumnIndex("userName"));
         user.password = cursor.getString(cursor.getColumnIndex("password"));

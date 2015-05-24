@@ -24,4 +24,5 @@
     <string name="login_tips">亲，你还没有登录哦！赶快登录吧~</string>
     <string name="net_album">网络相册</string>
     <string name="local_album">本地相册</string>
+    <string name="network_error">网络请求超时，请稍后重试</string>
 </resources>
