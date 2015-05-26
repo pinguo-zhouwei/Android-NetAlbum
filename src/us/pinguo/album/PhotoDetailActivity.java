@@ -189,11 +189,18 @@ public class PhotoDetailActivity extends AsyncTaskActivity implements SharePicVi
 
                 break;
             case SharePicViewDialog.POSITION_MORE:
-
+                systemShare("更多分享", uri);
                 break;
         }
     }
 
+    private void systemShare(String activityTitle, Uri uri) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("image/jpg");
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(Intent.createChooser(intent, activityTitle));
+    }
 
     @Override
     public void onClick(View v) {
@@ -269,7 +276,7 @@ public class PhotoDetailActivity extends AsyncTaskActivity implements SharePicVi
             String url = "";
             if (photoItem.url.startsWith("http://")) {
                 url = photoItem.url;
-            }else{
+            } else {
                 url = "file://" + photoItem.url;
             }
             ImageLoader.getInstance().displayImage(url, new ImageViewAware(imageView), displayImageOptions);

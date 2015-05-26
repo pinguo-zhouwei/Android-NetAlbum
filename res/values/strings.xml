@@ -5,7 +5,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="album">相册</string>
-    <string name="secret_album">私密相冊</string>
+    <string name="secret_album">我的相冊</string>
     <string name="big_pic">大图浏览</string>
     <string name="weibo_share_content">#相册#</string>
     <string name="baby_vedio_share_to">分享到</string>

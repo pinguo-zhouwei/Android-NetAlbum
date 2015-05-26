@@ -63,6 +63,10 @@
                   android:screenOrientation="portrait"
                   android:theme="@android:style/Theme.NoTitleBar"
                 />
+        <activity android:name=".SelectSkinActivity"
+                  android:screenOrientation="portrait"
+                  android:theme="@android:style/Theme.NoTitleBar"
+                />
         <!-- 必须注册在微博授权，分享微博时候用到 -->
         <activity android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
                   android:configChanges="keyboardHidden|orientation"

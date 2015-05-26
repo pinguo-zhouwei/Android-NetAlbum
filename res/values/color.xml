@@ -7,6 +7,8 @@
     <color name="black">#000000</color>
     <color name="black_light">#272829</color>
 
+    <color name="time_line_top_default">#FFA6E2CE</color>
+
     <color name="remember">#A98788</color>
     <!-- 怀旧-->
     <color name="green_light">#4bb05c</color>
