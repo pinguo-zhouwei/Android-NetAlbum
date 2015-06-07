@@ -29,6 +29,8 @@ public class PhotoUploadTask implements Runnable {
     public static final int DEFAULT_BACKOFF_MULT = 0;
     private Context mContext;
 
+    private boolean isStart = false;
+
     public PhotoUploadTask(Context mContext) {
         this.mContext = mContext;
     }
@@ -45,6 +47,7 @@ public class PhotoUploadTask implements Runnable {
             if (photoItemList == null || photoItemList.size() == 0) {
                 return;
             }
+            setStart(true);
             for (int i = 0; i < photoItemList.size(); i++) {
                 final PhotoItem item = photoItemList.get(i);
                 String url = item.url;
@@ -79,6 +82,7 @@ public class PhotoUploadTask implements Runnable {
                     });
                 }
             }
+            setStart(false);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -104,5 +108,13 @@ public class PhotoUploadTask implements Runnable {
 
         // 上传失败返回空字符串
         return null;
+    }
+
+    public void setStart(boolean isStart) {
+        this.isStart = isStart;
+    }
+
+    public boolean isStart() {
+        return isStart;
     }
 }

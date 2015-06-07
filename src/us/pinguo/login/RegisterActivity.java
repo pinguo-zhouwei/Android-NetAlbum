@@ -13,6 +13,7 @@ import us.pinguo.album.AsyncTaskActivity;
 import us.pinguo.album.R;
 import us.pinguo.model.AlbumManager;
 import us.pinguo.network.AsyncResult;
+import us.pinguo.utils.NetworkUtils;
 
 /**
  * Created by Mr 周先森 on 2015/4/22.
@@ -58,6 +59,11 @@ public class RegisterActivity extends AsyncTaskActivity implements View.OnClickL
     }
 
     public void userRegister() {
+        //判断是否有网络
+        if (!NetworkUtils.hasNet(this)) {
+            Toast.makeText(this, R.string.network_error, Toast.LENGTH_SHORT).show();
+            return;
+        }
         Log.i(TAG, "haha.........");
         String userName = mEditUserName.getText().toString().trim();
         String pass = mEditPass.getText().toString().trim();

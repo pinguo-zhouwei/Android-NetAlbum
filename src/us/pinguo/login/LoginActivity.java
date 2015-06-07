@@ -22,6 +22,7 @@ import us.pinguo.model.UserInfo;
 import us.pinguo.network.AsyncResult;
 import us.pinguo.thridlogin.AccessTokenKeeper;
 import us.pinguo.thridlogin.Constants;
+import us.pinguo.utils.NetworkUtils;
 
 import java.text.SimpleDateFormat;
 
@@ -102,6 +103,11 @@ public class LoginActivity extends AsyncTaskActivity implements View.OnClickList
     }
 
     public void userLogin() {
+        //判断是否有网络
+        if (!NetworkUtils.hasNet(this)) {
+            Toast.makeText(this, R.string.network_error, Toast.LENGTH_SHORT).show();
+            return;
+        }
         Log.i(TAG, "haha.........");
         String userName = mUserName.getText().toString().trim();
         String pass = mPassword.getText().toString().trim();

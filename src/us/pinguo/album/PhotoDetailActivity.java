@@ -25,6 +25,7 @@ import us.pinguo.album.view.SharePicViewDialog;
 import us.pinguo.model.PhotoInfoCache;
 import us.pinguo.model.PhotoItem;
 import us.pinguo.model.Storage;
+import us.pinguo.utils.NetworkUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,6 +39,7 @@ public class PhotoDetailActivity extends AsyncTaskActivity implements SharePicVi
     public static final int FLAG_NET = 0;
     public static final int FLAG_LOCAL = 1;
     public static final int SAVE_PIC = 2;
+    public static final int SHARE_PIC = 3;
     private ViewPager mViewPager;
     private List<PhotoItem> mPhotoItemList;
     private PhotoPagerAdapter mAdapter;
@@ -68,6 +70,32 @@ public class PhotoDetailActivity extends AsyncTaskActivity implements SharePicVi
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+                    }
+                });
+
+
+            } else if (msg.what == SHARE_PIC) {
+                final Bitmap bitmap = (Bitmap) msg.obj;
+                final int positon = msg.arg1;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        hideProgressDialog();
+
+                        String path = FileUtils.generatePicPath();
+                        if (path == null) {
+                            return;
+                        }
+                        try {
+                            BitmapUtils.saveBitmap(path, bitmap, 100);
+                            //    Toast.makeText(PhotoDetailActivity.this, R.string.save_pic_path, Toast.LENGTH_SHORT).show();
+                            Storage.addStorage(PhotoDetailActivity.this, path);//插入媒体数据库
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        //分享
+                        doShare(Uri.fromFile(new File(path)), positon);
+
                     }
                 });
 
@@ -117,13 +145,32 @@ public class PhotoDetailActivity extends AsyncTaskActivity implements SharePicVi
         Log.i("zhouwei", "PhotoDetailActivity " + mPhotoItemList.size());
     }
 
+    public void generatePhotoUri(final String path, final int sharePosition) {
+        showProgressDialog();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Bitmap bitmap = ImageLoader.getInstance().loadImageSync(path);
+
+                Message msg = new Message();
+                msg.what = SHARE_PIC;
+                msg.obj = bitmap;
+                msg.arg1 = sharePosition;
+                mHandler.handleMessage(msg);
+            }
+        }).start();
+
+    }
+
     @Override
     public void onShareItemClick(SharePicViewDialog dialog, int position) {
         Uri uri = null;
         if (mCurrentPhotoItem != null) {
             if (mCurrentPhotoItem.url.startsWith("http://")) {
-                File file = ImageLoader.getInstance().getDiskCache().get(mCurrentPhotoItem.url);
-                uri = Uri.fromFile(file);
+                // File file = ImageLoader.getInstance().getDiskCache().get(mCurrentPhotoItem.url);
+                //  uri = Uri.fromFile(file);
+                generatePhotoUri(mCurrentPhotoItem.url, position);
+                return;
             } else {
                 uri = Uri.fromFile(new File(mCurrentPhotoItem.url));
             }
@@ -132,6 +179,14 @@ public class PhotoDetailActivity extends AsyncTaskActivity implements SharePicVi
         if (uri == null) {
             return;
         }
+        if (!NetworkUtils.hasNet(this)) {
+            Toast.makeText(this, R.string.can_not_share, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        doShare(uri,position);
+    }
+
+    private void doShare(Uri uri, int position) {
         boolean isShareWebExist;
         switch (position) {
             case SharePicViewDialog.POSITION_WEIXIN:

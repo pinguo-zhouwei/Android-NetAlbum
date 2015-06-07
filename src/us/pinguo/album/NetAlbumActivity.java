@@ -20,6 +20,7 @@ import us.pinguo.model.AlbumManager;
 import us.pinguo.model.PhotoItem;
 import us.pinguo.model.PhotoUploadTask;
 import us.pinguo.network.AsyncResult;
+import us.pinguo.utils.NetworkUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,8 +71,14 @@ public class NetAlbumActivity extends AsyncTaskActivity implements View.OnClickL
     }
 
     public void flush() {
-        PhotoUploadTask task = new PhotoUploadTask(this);
-        new Thread(task).start();
+        //判断是否有网络
+        if (NetworkUtils.hasNet(this)) {
+            PhotoUploadTask task = new PhotoUploadTask(this);
+            new Thread(task).start();
+        } else {
+            Toast.makeText(this, R.string.net_nuconnect, Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override
@@ -100,6 +107,10 @@ public class NetAlbumActivity extends AsyncTaskActivity implements View.OnClickL
      * 同步服务器照片
      */
     public void sncPhotos() {
+        if (!NetworkUtils.hasNet(this)) {
+            Toast.makeText(this, R.string.net_nuconnect, Toast.LENGTH_SHORT).show();
+            return;
+        }
         AlbumManager manager = new AlbumManager(this);
         manager.sncPhoto().get(new AsyncResult<List<PhotoItem>>() {
             @Override

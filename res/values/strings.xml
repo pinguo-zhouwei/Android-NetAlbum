@@ -25,4 +25,6 @@
     <string name="net_album">网络相册</string>
     <string name="local_album">本地相册</string>
     <string name="network_error">网络请求超时，请稍后重试</string>
+    <string name="net_nuconnect">网络已断开连接!</string>
+    <string name="can_not_share">网络已断开连接,不能分享照片~</string>
 </resources>
