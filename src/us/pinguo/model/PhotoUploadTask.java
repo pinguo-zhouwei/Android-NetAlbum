@@ -67,6 +67,7 @@ public class PhotoUploadTask implements Runnable {
                             item.url = res.url;
                             item.isUpload = 1;
                             item.photoId = res.photoId;
+                            item.userId = res.userId;
                             try {
                                 DBPhotoTable table = new DBPhotoTable(SandBoxSql.getInstance());
                                 table.updateById(item);

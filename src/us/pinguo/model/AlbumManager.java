@@ -34,6 +34,9 @@ public class AlbumManager {
 
             @Override
             public UserInfo adapt(BaseResponse<UserInfo> userBaseResponse) throws Exception {
+                if (userBaseResponse.data == null) {
+                    return null;
+                }
                 //数据库操作
                 UserInfoCache userInfoCache = new UserInfoCache();
                 userInfoCache.saveUser(userBaseResponse.data);
@@ -70,20 +73,24 @@ public class AlbumManager {
                 //保存数据库
                 List<ApiGetPhoto.PhotoRes> photosList = photosBaseResponse.data;
                 List<PhotoItem> photoItems = new ArrayList<PhotoItem>();
-                if (photosList != null && photosList.size() > 0) {
-                    for (int i = 0; i < photosList.size(); i++) {
-                        PhotoItem item = new PhotoItem();
-                        ApiGetPhoto.PhotoRes photoRes = photosList.get(i);
-                        item.photoId = photoRes.photoId;
-                        item.isUpload = 1;
-                        item.url = photoRes.url;
-                        item.time = photoRes.time;
-                        photoItems.add(item);
+                if (photosList.size() != 0) {
+
+                    if (photosList != null && photosList.size() > 0) {
+                        for (int i = 0; i < photosList.size(); i++) {
+                            PhotoItem item = new PhotoItem();
+                            ApiGetPhoto.PhotoRes photoRes = photosList.get(i);
+                            item.photoId = photoRes.photoId;
+                            item.isUpload = 1;
+                            item.url = photoRes.url;
+                            item.time = photoRes.time;
+                            item.userId = photoRes.userId;
+                            photoItems.add(item);
+                        }
                     }
+                    //更新
+                    DBPhotoTable dbPhotoTable = new DBPhotoTable(SandBoxSql.getInstance());
+                    dbPhotoTable.update(photoItems);
                 }
-                //更新
-                DBPhotoTable dbPhotoTable = new DBPhotoTable(SandBoxSql.getInstance());
-                dbPhotoTable.update(photoItems);
 
                 return photoItems;
             }

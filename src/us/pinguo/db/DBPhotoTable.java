@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import us.pinguo.album.AlbumConstant;
+import us.pinguo.album.MyAlbum;
 import us.pinguo.model.PhotoItem;
 
 import java.util.ArrayList;
@@ -154,6 +155,10 @@ public class DBPhotoTable {
     }
 
     public synchronized List<PhotoItem> queryPhoto() {
+        String userId = MyAlbum.getSharedPreferences().getString("userId", "");
+        if (userId.equals("")) {
+            return new ArrayList<PhotoItem>();
+        }
         int len = getPhotoCount();
         List<PhotoItem> items = new ArrayList<PhotoItem>(len);
         SQLiteDatabase db = null;
@@ -163,7 +168,7 @@ public class DBPhotoTable {
             if (db == null) {
                 throw new IllegalStateException("Couldn't open database of " + AlbumConstant.SAND_B0X_DB_PATH);
             }
-            cursor = db.rawQuery("SELECT * FROM photo", null);
+            cursor = db.rawQuery("SELECT * FROM photo WHERE userId=?", new String[]{userId});
             while (cursor.moveToNext()) {
                 PhotoItem item = cursorToPhotoItem(cursor);
                 items.add(item);
@@ -215,6 +220,7 @@ public class DBPhotoTable {
         values.put("headerId", item.headerId);
         values.put("isUpload", item.isUpload);
         values.put("photoId", item.photoId);
+        values.put("userId", item.userId);
         return values;
     }
 
@@ -225,6 +231,7 @@ public class DBPhotoTable {
         item.url = cursor.getString(cursor.getColumnIndex("path"));
         item.id = cursor.getInt(cursor.getColumnIndex("id"));
         item.photoId = cursor.getString(cursor.getColumnIndex("photoId"));
+        item.userId = cursor.getString(cursor.getColumnIndex("userId"));
         return item;
     }
 

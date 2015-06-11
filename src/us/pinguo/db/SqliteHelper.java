@@ -31,6 +31,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
         final String sql = "create table if not exists photo(" +
                 "id integer primary key," +
                 "photoId varchar(32)," +
+                "userId varchar(32)," +
                 "time varchar(20)," +
                 "headerId integer," +
                 "isUpload integer," +

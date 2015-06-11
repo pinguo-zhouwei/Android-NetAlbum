@@ -13,7 +13,6 @@ import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.WeiboAuthListener;
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
 import com.sina.weibo.sdk.exception.WeiboException;
-import com.sina.weibo.sdk.utils.LogUtil;
 import us.pinguo.album.AsyncTaskActivity;
 import us.pinguo.album.NetAlbumActivity;
 import us.pinguo.album.R;
@@ -85,7 +84,6 @@ public class LoginActivity extends AsyncTaskActivity implements View.OnClickList
                 if (mSsoHandler != null) {
                     mSsoHandler.authorize(mLoginListener);
                 } else {
-                    LogUtil.e(TAG, "Please setWeiboAuthInfo(...) for first");
                 }
                 break;
         }
@@ -130,6 +128,10 @@ public class LoginActivity extends AsyncTaskActivity implements View.OnClickList
             @Override
             public void onSuccess(UserInfo user) {
                 hideProgressDialog();
+                if (user == null) {
+                    Toast.makeText(LoginActivity.this, "用户名或密码错误", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                 if (user != null) {
                     Log.i(TAG, "UserName:" + user.userName + "  pass:" + user.password);

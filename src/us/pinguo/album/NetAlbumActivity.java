@@ -179,6 +179,7 @@ public class NetAlbumActivity extends AsyncTaskActivity implements View.OnClickL
         photoItem.url = url;
         photoItem.time = String.valueOf(System.currentTimeMillis());
         photoItem.isUpload = 0;
+        photoItem.userId = MyAlbum.getSharedPreferences().getString("userId", "");
         return photoItem;
     }
 
@@ -190,6 +191,13 @@ public class NetAlbumActivity extends AsyncTaskActivity implements View.OnClickL
         Intent intent = new Intent(this, PhotoDetailActivity.class);
         intent.putExtras(bundle);
         this.startActivity(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        photoItemList.clear();
+        photoItemList = null;
     }
 
     class GridViewAdapter extends BaseAdapter {
@@ -210,7 +218,7 @@ public class NetAlbumActivity extends AsyncTaskActivity implements View.OnClickL
 
         @Override
         public int getCount() {
-            return photoItemList.size();
+            return photoItemList.size() > 0 ? photoItemList.size() : 0;
         }
 
         @Override
